@@ -1,0 +1,14 @@
+{
+	"de": {
+        "loading": "Wird geladen",
+        "persons": "Pursons",
+        "catering": "Gastronomie",
+        "room_type": "Zimmertyp"
+    },
+    "en":{
+        "loading": "Loading",
+        "persons": "Persons",
+        "catering": "Catering",
+        "room_type": "Room Type"
+    }
+}
