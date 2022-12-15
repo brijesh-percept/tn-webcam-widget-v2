@@ -4,3 +4,10 @@ export const loadWebcamsAction = (payload) => {
         payload
     }
 };
+
+export const loadWebcamArchiveAction = (payload) => {
+    return {
+        type: "LOAD_WEBCAM_ARCHIVE",
+        payload
+    }
+};
