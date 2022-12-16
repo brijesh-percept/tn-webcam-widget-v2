@@ -69,7 +69,7 @@ function Cmobileview(props) {
                             </div>
                             
                             <div className={"divulge_slides_" + unique_id}
-                                data-date={latestArchiveTimestamp/*format(toDate(latestArchive.timestamp), "h:m aaa  d-M-yyyy")*/}
+                                data-date={format(latestArchiveTimestamp, "h:m aaa  d-M-yyyy")}
                                 onClick={()=>{}/*camwidget.play_pause_function(unique_id)*/}>
                                 
                                 <img zoomimgsrc={zoomimgsrc}
