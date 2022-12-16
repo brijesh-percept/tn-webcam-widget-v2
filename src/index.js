@@ -14,6 +14,8 @@ const Index = (props) => {
     const color = props.Color;
     const camids = props.Camids;
     const modid = props.Modid;
+    const acclat = props.Acclat;
+    const acclon = props.Acclon;
 
     
     return (
@@ -21,7 +23,7 @@ const Index = (props) => {
         <Provider store={store}>
 
             <div styles={styles}>
-                <TnWebcam lang={lang} camids={camids} color={color} modid={modid} ></TnWebcam>
+                <TnWebcam lang={lang} camids={camids} color={color} modid={modid} acclat={acclat} acclon={acclon}></TnWebcam>
             </div>
 
         </Provider>
@@ -34,13 +36,15 @@ Index.propTypes = {
     lang: PropTypes.string,
     camids: PropTypes.string,
     color: PropTypes.string,
-    modid: PropTypes.string
+    modid: PropTypes.string,
+    acclat: PropTypes.string,
+    acclon: PropTypes.string
 }
 
 
 customElements.define(
     "tn-webcam-widget",
     reactToWebComponent(Index, React, ReactDOM, {
-        props: ["Lang", "Camids", "Color", "Modid"],
+        props: ["Lang", "Camids", "Color", "Modid", "Acclat", "Acclon"],
     }),
 )

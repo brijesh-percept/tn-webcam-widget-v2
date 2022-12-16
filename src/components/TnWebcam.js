@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import getCams from './api/cams';
 import getCamArchive from './api/camArchive';
 import Sidebar from './Sidebar';
+import Cmobileview from './Cmobileview';
 
 const mapStateToProps = state => ({
     cams: state.webcam.webcams,
@@ -58,7 +59,7 @@ function TnWebcam(props) {
 
     return (
         <>
-            <div className="wtrcam_main_pop box_loading" id="wtrcam_main_pop{props.modid}">
+            <div className="wtrcam_main_pop box_loading" id={"wtrcam_main_pop" + props.modid}>
                 <div className="wtrcam_main_pop_overlay"></div>
                 <div className="close_pop">x</div>
                 <div className={"wtrcam_main wtrcam_main"+props.modid} modid={props.modid} >
@@ -76,6 +77,8 @@ function TnWebcam(props) {
                                             <div key={"a"+key}>
                                                 <input type="hidden" id={"textcolor"+props.modid + item.id + "cams" + key} value="#000" />	
                                                 <span className="divulge-parent" id={"divulge-parent-"+props.modid + item.id + "cams" + key}>
+                                                    <Sidebar modid={props.modid} camid={item.id} camkey={key} acclat={props.acclat} acclon={props.acclon}></Sidebar>
+                                                    <Cmobileview modid={props.modid} camid={item.id} camkey={key} acclat={props.acclat} acclon={props.acclon}></Cmobileview>
                                                 </span> 
                                             </div>
                                         )
