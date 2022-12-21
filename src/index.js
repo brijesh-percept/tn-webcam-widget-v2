@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from 'react-dom/client';
 import reactToWebComponent from "react-to-webcomponent";
-import TnWebcam from './components/TnWebcam';
+import TnWebcamNew from './components/TnWebcamNew';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux'
 import configureStore from "./store/configureStore";
@@ -23,7 +23,7 @@ const Index = (props) => {
         <Provider store={store}>
 
             <div styles={styles}>
-                <TnWebcam lang={lang} camids={camids} color={color} modid={modid} acclat={acclat} acclon={acclon}></TnWebcam>
+                <TnWebcamNew lang={lang} camids={camids} color={color} modid={modid} acclat={acclat} acclon={acclon}></TnWebcamNew>
             </div>
 
         </Provider>

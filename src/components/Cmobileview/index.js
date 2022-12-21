@@ -69,7 +69,7 @@ function Cmobileview(props) {
                             </div>
                             
                             <div className={"divulge_slides_" + unique_id}
-                                data-date={format(latestArchiveTimestamp, "h:m aaa  d-M-yyyy")}
+                                data-date={latestArchiveTimestamp ? format(latestArchiveTimestamp, "h:m aaa  d-M-yyyy") : ''}
                                 onClick={()=>{}/*camwidget.play_pause_function(unique_id)*/}>
                                 
                                 <img zoomimgsrc={zoomimgsrc}
@@ -86,67 +86,50 @@ function Cmobileview(props) {
                 </div>
 
 
-                {/*
+                
                 <div className="camsliderbottom_main">
                     <div className="period-box">
-                        <select className="period-selector" id="period-<?php echo $_GET['unique_id']; ?>">
-                            <option value="none" disabled><?php echo $select_period; ?></option>
-                            <option value="daily" selected><?php echo $daily; ?></option>
-                            <option value="week"><?php echo $week; ?></option>
-                            <option value="month"><?php echo $month; ?></option>
-                            <option value="year"><?php echo $year; ?></option>
+                        <select defaultValue="daily" className="period-selector" id={"period-" + unique_id}>
+                            <option value="none" disabled>Select Period</option>
+                            <option value="daily">Daily</option>
+                            <option value="week">Week</option>
+                            <option value="month">Month</option>
+                            <option value="year">Year</option>
                         </select>
                         <div className="show-week hide-visibility">
                         </div>
                     
                     </div>
-                    <!-- Video Range -->
+                    
+                    
                     <div className="camsliderbottom_range">
                 
-                        <?php
-                        $date_select = 'select min(timestamp) as min, max(timestamp) as max from camarchive WHERE camid =' . $_GET['camid'] . '';
-                        $result = $database->custom_query($date_select);
-                        $row = $result->fetch_assoc();
-
-                        $starttime = gmdate('Y-m-d') . ' 00:00:00';
-                        $endtime = gmdate('Y-m-d') . ' 23:59:59';
-                        //echo '<br/>';
-                        $starttime = gmdate('Y-n-j H:i:s', strtotime($starttime));
-                        $endtime = gmdate('Y-n-j H:i:s', strtotime($endtime));
-
-                        $date_select = 'select min(timestamp) as min from camarchive WHERE camid =' . $_GET['camid'] . ' AND timestamp>="' . $starttime . '" AND timestamp<="' . $endtime . '"';
-                        $result = $database->custom_query($date_select);
-                        $row = $result->fetch_assoc();
-
-                        //Added by percept
-                        //$timestamp = gmdate('Y-m-d') . ' 23:59:59';
-                        ?>
-
-                        <div className="play-pause-left" id="play-pause-<?php echo $_GET['unique_id']; ?>">
+                        <div className="play-pause-left" id={"play-pause-" + unique_id}>
                             <i className="fa fa-play"></i>
                         </div>
                         <div className="range-wrap">
-                            <div className="range-value" id="rangeV-<?php echo $_GET['unique_id']; ?>"></div>
+                            <div className="range-value" id={"rangeV-" + unique_id}></div>
 
-                            <div className="range-value" id="rangeV-<?php echo $_GET['unique_id']; ?>"></div>
-                            <input onload="range_initiate()" id="range-<?php echo $_GET['unique_id']; ?>" type="range"
-                                min="<?php echo convert_time_slider(gmdate('H:i:s', strtotime($row['min']))); ?>"
-                                max="<?php echo convert_time_slider(gmdate('H:i:s', strtotime($timestamp))); ?>"
-                                value="<?php echo convert_time_slider(gmdate('H:i:s', strtotime($timestamp))); ?>"
-                                step="1">
+                            <div className="range-value" id={"rangeV-" + unique_id}></div>
+                            <input id={"range-" + unique_id} type="range"
+                                min="1"
+                                max="96"
+                                defaultValue="90"
+                                step="1" />
                             <input type="hidden"
-                                value="<?php echo convert_time_to_estimate(gmdate('H:i:s', strtotime($timestamp))); ?>"
-                                id="rang-time-<?php echo $_GET['unique_id']; ?>"/>
+                                defaultValue="11:00 pm"
+                                id={"rang-time-"+unique_id}/>
 
                             <input type="hidden" value="<?php echo gmdate('Y-m-d'); ?>"
-                                id="divulge-today-<?php echo $_GET['unique_id']; ?>"/>
-                            <span data-src="" style="display:none;" id="temp-img-<?php echo $_GET['unique_id']; ?>">
+                                id={"divulge-today-" + unique_id} />
+                            <span data-src="" style={{display:'none'}} id={"temp-img-" + unique_id}>
 
                             </span>
                         </div>
                         
                     </div>
-                    
+
+                    {/*
                     <?php 
                         $modimagepath = $_GET['modimagepath'];
                         
@@ -324,9 +307,9 @@ function Cmobileview(props) {
                             </div>
                         </div>
                     </div>
-
+                    */}                
                 </div>
-                */}
+                
 
                 
 

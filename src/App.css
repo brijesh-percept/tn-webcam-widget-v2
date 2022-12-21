@@ -1,1 +1,9 @@
+/*
 @import url('https://webcamwidget.fullmarketing.at/joom_cam_cdn/weathercam.css');
+@import url('https://webcamwidget.fullmarketing.at/joom_cam_cdn/videostyle.css');
+@import url('https://webcamwidget.fullmarketing.at/joom_cam_cdn/weathercamcal.css');
+@import url('https://webcamwidget.fullmarketing.at/joom_cam_cdn/range.css');
+*/
+@import "~react-image-gallery/styles/css/image-gallery.css";
+@import "slick-carousel/slick/slick.css";
+@import "slick-carousel/slick/slick-theme.css";

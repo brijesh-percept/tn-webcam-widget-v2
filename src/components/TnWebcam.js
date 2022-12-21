@@ -17,6 +17,7 @@ const mapDispatchToProps = dispatch => ({
 
 function TnWebcam(props) {
     useEffect(() => {
+        console.log("hellosds",props.cams);
         if (props.cams.length === 0) {
             (async () => {
                 var request = {
@@ -38,7 +39,7 @@ function TnWebcam(props) {
     }, [])
 
     useEffect(() => {
-        //console.log("hello",Object.keys(props.cams).length);
+        console.log("hello",Object.keys(props.cams).length);
         if (Object.keys(props.cams).length > 0) {
             Object.values(props.cams).forEach((item) => {
                 (async () => {
