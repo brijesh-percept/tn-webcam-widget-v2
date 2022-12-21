@@ -16,6 +16,10 @@ const mapDispatchToProps = dispatch => ({
  });
 
 function TnWebcamNew(props) {
+    const [nav1, setNav1] = useState(null);
+    const [nav2, setNav2] = useState(null);
+    //const [slider1, setSlider1] = useState(null);
+    //const [slider2, setSlider2] = useState(null);
     useEffect(() => {
         if (props.cams.length === 0) {
             (async () => {
@@ -57,11 +61,11 @@ function TnWebcamNew(props) {
                             props.loadWebcamArchive(archive);
                             //setCams(data.cams);
                             //imagesArr[key] = [];
-                            imagesArr[key] = [];
+                            imagesArr['cam'+item.id] = [];
                             Object.values(data.archive).map((image, innerkey) => {
                                 var imgpath = image.imgpath;
                                 var parts = imgpath.split(".");
-                                imagesArr[key].push({
+                                imagesArr['cam'+item.id].push({
                                     original: 'https://webcamwidget.fullmarketing.at/camsimg/' + item.id + '/' + parts.join('-1210.'),
                                     thumbnail: 'https://webcamwidget.fullmarketing.at/camsimg/' + item.id + '/' + parts.join('-310.'),
                                     timestamp: image.timestamp,
@@ -83,36 +87,59 @@ function TnWebcamNew(props) {
 
     //console.log("images",images);
 
-    var sliderSettings = {
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1
-      };
+    
     
     return (
         <>
-            <div id={"slider-for"+props.modid} className="slider-for">
-                <Slider {...sliderSettings}>
+                <Slider
+                    asNavFor={nav2}
+                    ref={slider => (setNav1(slider))}
+                >
                     {
-                        images && Object.values(props.cams)?.map((item, key) => {
+                        images && Object.keys(props.cams)?.map((item, key) => {
                                 //console.log('length',Object.keys(images[key]).length)
                                 return(
-                                    (typeof images[key] !== 'undefined' && Object.keys(images[key]).length > 0) ? 
-                                    <div key={"a"+key}>
+                                    //(typeof images['cam'+item] !== 'undefined' && Object.keys(images['cam'+item]).length > 0) ? 
+                                    ('cam'+item in images) ? 
+                                    <div key={"a"+item}>
                                         <ImageGallery 
                                         showThumbnails={false} 
-                                        items={images[key]} 
+                                        showNav={false}
+                                        items={images['cam'+item]} 
                                         />
                                     </div>
-                                    : <div key={"a"+key}>Loading</div>
+                                    : <div key={"a"+item}>Loading</div>
                                 )
                             
                         })
                     }
                 </Slider>    
-            </div>
+            
+                <Slider
+                    asNavFor={nav1}
+                    ref={slider => (setNav2(slider))}
+                    slidesToShow={2}
+                    swipeToSlide={true}
+                    focusOnSelect={true}
+                    >
+                    {
+                        images && Object.keys(props.cams)?.map((item, key) => {
+                                //console.log('length',Object.keys(images[key]).length)
+                                return(
+                                    //(typeof images['cam'+item] !== 'undefined' && Object.keys(images['cam'+item]).length > 0) ? 
+                                    ('cam'+item in images) ? 
+                                    <div key={"a"+item}>
+                                        <img alt={''} src={images['cam'+item][0].thumbnail} /> 
+                                    </div>
+                                    :<div key={"a"+item}>
+                                        <h1>{key}</h1>
+                                    </div>
+                                )
+                            
+                        })
+                    }
+                </Slider>    
+            
         </>
     )
 }
