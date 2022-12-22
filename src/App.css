@@ -27,14 +27,26 @@ tn-webcam-widget {
 }
 
 .tn-webcam-main {
-    background-color: #464646;
+	max-width: 1920px;
+	margin: 0 auto;
+	width: 100%;
+}
+.tn-webcam-slider > div {
+	width: 100%;
+}
+.tn-webcam-slider {
+	position: relative;
+	min-height: 1080px;
+	background: #464646;
+	display: flex;
+	flex-wrap: wrap;
+	align-content: space-between;
 }
 .tn-webcam-slider-top {
     position: relative;
 }
 .tn-webcam-slider-top::before {
 	content: "";
-	height: 170px;
 	position: absolute;
 	left: 0;
 	width: 100%;
@@ -104,4 +116,237 @@ tn-webcam-widget {
 .tn-webcam-zoom img {
 	max-width: 55px;
 	width: 100%;
+}
+.slider-content {
+	display: flex;
+	color: #fff;
+	flex-wrap: wrap;
+	padding: 0 43px;
+	position: relative;
+}
+.slider-content::before {
+	content: "";
+	background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.40) 20%,rgba(0, 0, 0, 0.80) 50%);
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 1;
+}
+.slider-content > div {
+	width: 100%;
+	padding: 20px 0;
+	position: relative;
+	z-index: 1;
+}
+.slider-content-top {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.slider-content-top > div {
+	padding: 0 65px;
+	border-left: 1px solid #fff;
+}
+.slider-content-top > div span {
+	width: 100%;
+	display: block;
+	font-size: 24px;
+	line-height: 28px;
+	color: #fff;
+	text-transform: uppercase;
+	margin: 0;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+.slide-content-title {
+	font-weight: 700;
+}
+.slider-content-temp {
+	display: flex;
+}
+.slider-content-temp-lt {
+	width: 100%;
+	max-width: 55px;
+    margin-right: 10px;
+}
+.slider-content-temp-lt img {
+	width: 55px;
+}
+.slider-social-nav a {
+	background: #fff;
+	display: inline-block;
+	border-radius: 50px;
+	width: 48px;
+	height: 48px;
+	border: 2px solid #000;
+	margin-left: 6px;
+	padding: 8px;
+	text-align: center;
+	transition: 0.3s all ease;
+}
+.slider-social-nav a:hover {
+	background: rgba(255,255,255,0.7);
+	border-color: #fff;
+}
+.slider-social-nav a img {
+	width: 100%;
+}
+.slider-content-top > div.slider-content-date {
+	border-left: none;
+	padding-left: 0;
+	max-width: 11%;
+	width: 100%;
+}
+.slider-content-top > div.slider-content-place {
+	max-width: 15%;
+	width: 100%;
+}
+.slider-content-top > div.slider-content-temp {
+	max-width: 18%;
+	width: 100%;
+}
+.slider-content-top > div.slider-content-text {
+	max-width: 32%;
+	width: 100%;
+}
+.slider-content-top > div.slider-social-nav {
+	padding-right: 0;
+	border-left: none;
+	margin-left: auto;
+	max-width: 24%;
+	width: 100%;
+	text-align: right;
+}
+.slider-content-bottom {
+	padding: 8px;
+	border-top: 1px solid rgba(255,255,255,0.25);
+}
+.slider-content-bottom a {
+	color: #fff;
+	text-decoration: none;
+	font-size: 14px;
+}
+
+.tn-webcam-slider-middle {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+.tn-webcam-slider-middle .slick-slider {
+	height: 100%;
+	overflow: hidden;
+}
+.tn-webcam-slider-middle > .slick-slider:first-child * {
+	height: 100%;
+}
+.tn-webcam-slider-middle > .slick-slider:first-child button {
+	height: auto;
+	margin-bottom: 170px;
+}
+.tn-webcam-slider-middle > .slick-slider:last-child {
+	height: auto;
+	position: absolute;
+	bottom: 170px;
+	max-width: 400px;
+	right: 43px;
+	width: 100%;
+}
+.tn-webcam-slider-middle > .slick-slider:last-child .slick-slide {
+	padding: 10px;
+}
+.tn-webcam-slider-middle > .slick-slider:last-child .slick-slide img {
+	width: 100%;
+	height: auto;
+	border: 2px solid rgba(0,0,0,0.5);
+}
+.tn-webcam-slider-middle > .slick-slider:first-child .slick-list {
+	position: relative;
+	display: block;
+	overflow: hidden;
+	margin: 0;
+	padding: 0;
+	height: 100%;
+}
+
+.tn-webcam-slider-middle > .slick-slider:first-child .image-gallery-content .image-gallery-slide .image-gallery-image {
+	max-height: 1080px;
+	height: 100%;
+	object-fit: cover;
+	min-width: 100%;
+}
+@media only screen and (max-width: 1920px) {
+	.slider-content-bottom a {
+		font-size: 12px;
+	}
+	.slider-content-top > div {
+		padding: 0 25px;
+	}
+	.slider-content-top > div span,
+	.tn-webcam-live-txt {
+		font-size: 16px;
+		line-height: 24px;
+	}
+	.slider-social-nav a {
+		width: 38px;
+		height: 38px;
+	}
+	.tn-webcam-logo, .tn-webcam-logo img {
+		max-width: 150px;
+		max-height: 30px;
+		margin-bottom: 10px;
+	}
+	.tn-webcam-place-logo, .tn-webcam-place-logo img {
+		max-width: 200px;
+		max-height: 70px;
+	}
+	.tn-webcam-zoom img {
+		max-width: 25px;
+	}
+	.tn-webcam-live {
+		margin-right: 30px;
+	}
+	.tn-webcam-live-dot {
+		height: 10px;
+		width: 10px;
+	}
+	.tn-webcam-slider {
+		min-height: 700px;
+	}
+	.tn-webcam-slider-middle > .slick-slider:first-child .image-gallery-content .image-gallery-slide .image-gallery-image {
+		max-height: 700px;
+	}
+	.slider-content > div {
+		padding: 15px 0;
+	}
+	.tn-webcam-slider-top {
+		padding: 20px;
+	}
+	.slider-content {
+		padding: 0 20px;
+	}
+}
+@media only screen and (max-width: 1200px) {
+	.slider-content-top > div {
+		padding: 0 15px;
+	}
+	.slider-content > div {
+		padding: 10px 0;
+	}
+	.slider-content-top > div span {
+		font-size: 14px;
+		line-height: 18px;
+	}
+	.slider-content-temp-lt img {
+		width: 35px;
+	}
+	.slider-social-nav a {
+		width: 30px;
+		height: 30px;
+		padding: 5px;
+	}
 }
