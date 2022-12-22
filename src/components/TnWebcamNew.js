@@ -34,8 +34,6 @@ function TnWebcamNew(props) {
 
     const setCamImages = (imgs, camid)=>{
         images['cam'+camid] = imgs;
-        //var newimgs = [];
-        //newimgs['cam'+camid] = imgs;
         setImages({...images});
     }
 
@@ -107,12 +105,14 @@ function TnWebcamNew(props) {
                                         original: 'https://webcamwidget.fullmarketing.at/camsimg/' + item.id + '/' + parts.join('-1210.'),
                                         thumbnail: 'https://webcamwidget.fullmarketing.at/camsimg/' + item.id + '/' + parts.join('-310.'),
                                         timestamp: image.timestamp,
-                                        originalTitle: image.timestamp,
+                                        originalTitle: image.timeInner,
                                     });
                                 })
                                 
-                                //console.log("imagesArr",imagesArr);
+                                //console.log("imagesArr",imagesArr.length);
                                 setCamImages(imagesArr, item.id);
+                                var setting = {'max':imagesArr.length, 'step':1}
+                                setCamRangeSettings(setting, item.id);
                             }
                             
                         });
@@ -149,6 +149,7 @@ function TnWebcamNew(props) {
                                         showNav={false}
                                         items={images['cam'+item]} 
                                         disableSwipe={true}
+                                        onSlide={(currentIndex)=>{setCamRangeValues(currentIndex, item)}}
                                         renderPlayPauseButton={(onClick, isPlaying) => {
                                             return(
                                                 <div>
@@ -160,7 +161,7 @@ function TnWebcamNew(props) {
                                                     onChange={(e) => setCamRangeValues(e.target.value, item)}
                                                     style={getBackgroundSize(item)}
                                                     value={rangeValues['cam'+item]} />
-                                                    <p>value:{rangeValues['cam'+item]}</p>
+                                                    <p>value:{images['cam'+item][rangeValues['cam'+item]]?.originalTitle}</p>
                                                     
                                                 </div>
                                             )
@@ -189,7 +190,7 @@ function TnWebcamNew(props) {
                                     //(typeof images['cam'+item] !== 'undefined' && Object.keys(images['cam'+item]).length > 0) ? 
                                     ('cam'+item in images) ? 
                                     <div key={"a"+item}>
-                                        <img alt={''} src={images['cam'+item][0].thumbnail} /> 
+                                        <img alt={''} src={images['cam'+item].slice(-1)[0].thumbnail} /> 
                                     </div>
                                     :<div key={"a"+item}>
                                         <h1>{key}</h1>
