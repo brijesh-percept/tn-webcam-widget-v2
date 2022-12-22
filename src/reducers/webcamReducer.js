@@ -1,6 +1,9 @@
 import { parse } from 'date-fns';
 const initialState = {
-    webcams:[]
+    webcams:[],
+    images:[],
+    rangeValues:[],
+    rangeSettings:[]
 };
 
 export default function webcamReducer(state = initialState, action) {
@@ -10,6 +13,22 @@ export default function webcamReducer(state = initialState, action) {
                 ...state,
                 webcams: action.payload
             };
+        case "SET_IMAGES":
+            return {
+                ...state,
+                images: action.payload
+            };   
+        case "SET_RANGE_VALUES":
+            return {
+                ...state,
+                rangeValues: action.payload
+            }; 
+        case "SET_RANGE_SETTINGS":
+            return {
+                ...state,
+                rangeSettings: action.payload
+            };  
+        /*        
         case "LOAD_WEBCAM_ARCHIVE":
             const webcams = state.webcams;
             webcams[action.payload.id].archive = action.payload.archive;
@@ -23,7 +42,8 @@ export default function webcamReducer(state = initialState, action) {
             return {
                 ...state,
                 webcams: webcams
-            }    
+            }  
+        */      
         default:
             return state;
     }
