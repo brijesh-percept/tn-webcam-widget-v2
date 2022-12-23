@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { loadWebcamsAction/*, loadWebcamArchiveAction*/ } from '../actions/webcamAction';
 import { connect } from 'react-redux';
 import getCams from './api/cams';
@@ -7,9 +7,8 @@ import ImageGallery from 'react-image-gallery';
 import Slider from "react-slick";
 import PlayPause from './PlayPause';
 import TnWebcamSliderBottom from './TnWebcamSliderBottom';
-
-
-
+import DatePicker from "react-datepicker";
+import { addDays, subDays, format, isWeekend } from 'date-fns';
 
 
 
@@ -31,6 +30,8 @@ function TnWebcamNew(props) {
     const [rangeValues, setRangeValues] = useState([]);
     const [rangeSettings, setRangeSettings] = useState([]);
     const [isSliderPlayings, setIsSliderPlaying] = useState([]);
+    const [cameraInterval, setCameraInterval] = useState([]);
+    const [dateSelected, setDateFilter] = useState([]);
     const MAX = 100;
     const getBackgroundSize = (camid) => {
         return {
@@ -46,6 +47,28 @@ function TnWebcamNew(props) {
     const setCamRangeValues = (values, camid) => {
         rangeValues['cam' + camid] = values;
         setRangeValues({ ...rangeValues });
+    }
+    const setCamCameraInterval = (values, camid) => {
+        cameraInterval['cam' + camid] = values;
+        setCameraInterval({ ...cameraInterval });
+    }
+    const setCamDateFilter = (selected_date, camid) => {
+        var old_date = dateSelected['cam' + camid] ? dateSelected['cam' + camid] : null;
+        dateSelected['cam' + camid] = selected_date;
+        setDateFilter({ ...dateSelected });
+        if(old_date && old_date.getTime() !== selected_date.getTime()){ //we need to fetch images of the selected date for current camera
+            console.log("old date=", old_date," and selecteddate=", selected_date);
+            console.log("Make an API call for cam",camid, " and for the ", selected_date);
+            getCameraImages(camid, 'daily', selected_date);
+        }
+    }
+
+    const changeCamGalleryImage = (values, camid) => {
+        if('cam'+camid in cameraGallery.current){
+            if(typeof images['cam'+camid][values-1] !== 'undefined'){
+                cameraGallery.current['cam'+camid].slideToIndex(values-1);
+            }
+        }
     }
     const setCamRangeSettings = (setting, camid) => {
         rangeSettings['cam' + camid] = setting;
@@ -63,30 +86,61 @@ function TnWebcamNew(props) {
         setIsFade(!isFade);
     };
 
+    const cameraGallery = useRef({});
+
+    const getCameraImages = (camid, type='daily', date=new Date())=>{
+        (async () => {
+            var request = {
+                id: camid,
+                type: 'daily',
+                date: format(date, "yyyy-MM-dd")
+            }
+            await getCamArchive(request).then((data) => {
+                if (typeof data.archive !== 'undefined') {
+                    var imagesArr = [];
+                    Object.values(data.archive).map((image, innerkey) => {
+                        var imgpath = image.imgpath;
+                        var parts = imgpath.split(".");
+                        imagesArr.push({
+                            original: 'https://webcamwidget.fullmarketing.at/camsimg/' + camid + '/' + parts.join('-1210.'),
+                            thumbnail: 'https://webcamwidget.fullmarketing.at/camsimg/' + camid + '/' + parts.join('-310.'),
+                            timestamp: image.timestamp,
+                            originalTitle: image.timeInner,
+                        });
+                    })
+                    
+                    setCamImages(imagesArr, camid);
+                    var setting = {'max':imagesArr.length, 'step':1}
+                    setCamRangeSettings(setting, camid);
+                }
+
+            });
+
+
+        })();
+    }
+
     useEffect(() => {
         if (props.cams.length === 0) {
             var cams = props.camids.split(',');
             cams.forEach((camid) => {
-                setCamRangeValues(0, camid); // initialize rangeValues array for all camera
+                // initialize all camera slider
+                setCamRangeValues(0, camid); 
                 var setting = { 'max': MAX, 'step': 1 }
                 setCamRangeSettings(setting, camid);
                 //setCamImages([], camid);
                 setIsCamSliderPlaying(true, camid);
+                setCamCameraInterval('daily', camid);
+                setCamDateFilter(new Date(), camid);
             });
             (async () => {
                 var request = {
                     ids: props.camids
                 }
                 await getCams(request).then((data) => {
-                    //console.log(data);
                     if (typeof data.cams !== 'undefined') {
-                        //console.log(data.cams);
                         props.loadWebcams(data.cams);
-                        //setCams(data.cams);
                     }
-                    //localStorage.setItem('authtoken', JSON.stringify(data));
-                    //props.loadWebcams(data.cams);
-                    //setCams(data.cams)
                 });
             })();
         }
@@ -97,52 +151,13 @@ function TnWebcamNew(props) {
         if (Object.keys(props.cams).length > 0) {
             (async () => {
                 Object.values(props.cams).forEach((item, key) => {
-                    //console.log("key",key);
-                    (async () => {
-                        var request = {
-                            id: item.id
-                        }
-                        await getCamArchive(request).then((data) => {
-                            if (typeof data.archive !== 'undefined') {
-                                /*
-                                const archive = {
-                                    id: data.id, 
-                                    archive: data.archive
-                                };
-                                props.loadWebcamArchive(archive);
-                                */
-                                //setCams(data.cams);
-                                //imagesArr[key] = [];
-                                var imagesArr = [];
-                                Object.values(data.archive).map((image, innerkey) => {
-                                    var imgpath = image.imgpath;
-                                    var parts = imgpath.split(".");
-                                    imagesArr.push({
-                                        original: 'https://webcamwidget.fullmarketing.at/camsimg/' + item.id + '/' + parts.join('-1210.'),
-                                        thumbnail: 'https://webcamwidget.fullmarketing.at/camsimg/' + item.id + '/' + parts.join('-310.'),
-                                        timestamp: image.timestamp,
-                                        originalTitle: image.timeInner,
-                                    });
-                                })
-                                
-                                setCamImages(imagesArr, item.id);
-                                var setting = {'max':imagesArr.length, 'step':1}
-                                setCamRangeSettings(setting, item.id);
-                            }
-
-                        });
-
-
-                    })();
+                    getCameraImages(item.id);
                 });
             })();
         }
 
     }, [props.cams])
 
-    
-    //console.log("isSliderPlayings", isSliderPlayings);
-    //console.log("length", Object.keys(images).length, Object.keys(props.cams).length)
     return (
         Object.keys(images).length === Object.keys(props.cams).length ?
             <>
@@ -155,12 +170,12 @@ function TnWebcamNew(props) {
                 >
                     {
                         Object.keys(props.cams)?.map((item, key) => {
-                                //console.log('length',Object.keys(images[key]).length)
                                 return(
-                                    //(typeof images['cam'+item] !== 'undefined' && Object.keys(images['cam'+item]).length > 0) ? 
                                     ('cam'+item in images) ? 
-                                    <div key={"a"+item}>
+                                    <div key={"a"+item} className={"cam"+item}>
                                         <ImageGallery 
+                                        ref={(e)=>{cameraGallery.current['cam'+item] = e}}
+                                        accessibility={false}
                                         showThumbnails={false} 
                                         showNav={false}
                                         slideDuration={500}
@@ -169,9 +184,33 @@ function TnWebcamNew(props) {
                                         useTranslate3D={false}
                                         disableSwipe={true}
                                         onSlide={(currentIndex)=>{setCamRangeValues(currentIndex, item)}}
+                                        startIndex={Object.keys(images['cam'+item]).length-1}
                                         renderPlayPauseButton={(onClick, isPlaying) => {
                                             return (
                                                 <>
+                                                    <div className='camera-interval-control'>
+                                                        <select id={'cam'+item} 
+                                                            className='cameraintervalselect' 
+                                                            defaultValue={cameraInterval['cam'+item]}
+                                                            value={cameraInterval['cam'+item]}
+                                                            onChange={(e)=>setCamCameraInterval(e.target.value, item)}>
+                                                                <option value='daily'>Daily</option>
+                                                                <option value='week'>Week</option>
+                                                                <option value='month'>Month</option>
+                                                                <option value='year'>Year</option>
+                                                        </select>
+                                                        {
+                                                            cameraInterval['cam'+item] === 'daily' ? 
+                                                            <>
+                                                                <DatePicker 
+                                                                    selected={dateSelected['cam'+item]}
+                                                                    onChange={(date)=>setCamDateFilter(date, item)}
+                                                                    maxDate={new Date()}
+                                                                    />
+                                                            </>
+                                                            : ''
+                                                        }
+                                                    </div>
                                                     <div className='slide-bottom-content'>
                                                         <div className='slide-play-control'>
                                                             <PlayPause
@@ -183,10 +222,16 @@ function TnWebcamNew(props) {
                                                                 min="0"
                                                                 max={rangeSettings['cam' + item]['max']}
                                                                 step={rangeSettings['cam' + item]['step']}
-                                                                onChange={(e) => setCamRangeValues(e.target.value, item)}
+                                                                onChange={(e) => {setCamRangeValues(e.target.value, item); changeCamGalleryImage(e.target.value, item);}}
                                                                 style={getBackgroundSize(item)}
                                                                 value={rangeValues['cam' + item]} />
-                                                            <p className='value' >value:{rangeValues['cam' + item]}</p>
+                                                            <p className='value' >{
+                                                                rangeValues['cam' + item]-1 >=0 ?
+                                                                images['cam' + item][rangeValues['cam' + item]-1].originalTitle
+                                                                :
+                                                                images['cam' + item][rangeValues['cam' + item]].originalTitle
+                                                                }
+                                                            </p>
                                                         </div>
                                                         <div className={'TnWebcamSliderBottom-btn' + (isFade ? ' show' : '')} onClick={handleClick} ></div>
                                                         <div className={'TnWebcamSliderBottom' + (isFade ? ' show' : '')}>
@@ -196,7 +241,7 @@ function TnWebcamNew(props) {
                                                 </>
                                             )
                                             }
-                                        }
+                                        }   
                                         />
                                     </div>
                                     : <div key={"a" + item}>Loading</div>
@@ -215,9 +260,7 @@ function TnWebcamNew(props) {
                 >
                     {
                         Object.keys(images).length === Object.keys(props.cams).length && Object.keys(props.cams)?.map((item, key) => {
-                                //console.log('length',Object.keys(images[key]).length)
                                 return(
-                                    //(typeof images['cam'+item] !== 'undefined' && Object.keys(images['cam'+item]).length > 0) ? 
                                     ('cam'+item in images) ? 
                                     <div key={"a"+item}>
                                         <img alt={''} src={images['cam'+item].slice(-1)[0].thumbnail} /> 
