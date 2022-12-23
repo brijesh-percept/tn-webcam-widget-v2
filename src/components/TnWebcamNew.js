@@ -38,11 +38,9 @@ function TnWebcamNew(props) {
         };
     };
 
-    const setCamImages = (imgs, camid) => {
-        images['cam' + camid] = imgs;
-        //var newimgs = [];
-        //newimgs['cam'+camid] = imgs;
-        setImages({ ...images });
+    const setCamImages = (imgs, camid)=>{
+        images['cam'+camid] = imgs;
+        setImages({...images});
     }
 
     const setCamRangeValues = (values, camid) => {
@@ -123,12 +121,13 @@ function TnWebcamNew(props) {
                                         original: 'https://webcamwidget.fullmarketing.at/camsimg/' + item.id + '/' + parts.join('-1210.'),
                                         thumbnail: 'https://webcamwidget.fullmarketing.at/camsimg/' + item.id + '/' + parts.join('-310.'),
                                         timestamp: image.timestamp,
-                                        originalTitle: image.timestamp,
+                                        originalTitle: image.timeInner,
                                     });
                                 })
-
-                                //console.log("imagesArr",imagesArr);
+                                
                                 setCamImages(imagesArr, item.id);
+                                var setting = {'max':imagesArr.length, 'step':1}
+                                setCamRangeSettings(setting, item.id);
                             }
 
                         });
@@ -156,47 +155,48 @@ function TnWebcamNew(props) {
                 >
                     {
                         Object.keys(props.cams)?.map((item, key) => {
-                            //console.log('length',Object.keys(images[key]).length)
-                            return (
-                                //(typeof images['cam'+item] !== 'undefined' && Object.keys(images['cam'+item]).length > 0) ? 
-                                ('cam' + item in images) ?
-                                    <div className={isSliderPlayings['cam' + item]===true?'playing':''} key={"a" + item}>
-                                        <ImageGallery
-                                            showThumbnails={false}
-                                            showNav={false}
-                                            slideDuration={500}
-                                            slideInterval={3500}
-                                            items={images['cam' + item]}
-                                            useTranslate3D={false}
-                                            disableSwipe={true}
-                                            renderPlayPauseButton={(onClick, isPlaying) => {
-                                                return (
-                                                    <>
-                                                        <div className='slide-bottom-content'>
-                                                            <div className='slide-play-control'>
-                                                                <PlayPause
-                                                                    onClick={() => { onClick(); setIsCamSliderPlaying(isPlaying, item); }}
-                                                                    isPlaying={isPlaying}
+                                //console.log('length',Object.keys(images[key]).length)
+                                return(
+                                    //(typeof images['cam'+item] !== 'undefined' && Object.keys(images['cam'+item]).length > 0) ? 
+                                    ('cam'+item in images) ? 
+                                    <div key={"a"+item}>
+                                        <ImageGallery 
+                                        showThumbnails={false} 
+                                        showNav={false}
+                                        slideDuration={500}
+                                        slideInterval={3500}
+                                        items={images['cam'+item]} 
+                                        useTranslate3D={false}
+                                        disableSwipe={true}
+                                        onSlide={(currentIndex)=>{setCamRangeValues(currentIndex, item)}}
+                                        renderPlayPauseButton={(onClick, isPlaying) => {
+                                            return (
+                                                <>
+                                                    <div className='slide-bottom-content'>
+                                                        <div className='slide-play-control'>
+                                                            <PlayPause
+                                                                onClick={() => { onClick(); setIsCamSliderPlaying(isPlaying, item); }}
+                                                                isPlaying={isPlaying}
 
-                                                                />
-                                                                <input type="range"
-                                                                    min="0"
-                                                                    max={rangeSettings['cam' + item]['max']}
-                                                                    step={rangeSettings['cam' + item]['step']}
-                                                                    onChange={(e) => setCamRangeValues(e.target.value, item)}
-                                                                    style={getBackgroundSize(item)}
-                                                                    value={rangeValues['cam' + item]} />
-                                                                <p className='value' >value:{rangeValues['cam' + item]}</p>
-                                                            </div>
-                                                            <div className={'TnWebcamSliderBottom-btn' + (isFade ? ' show' : '')} onClick={handleClick} ></div>
-                                                            <div className={'TnWebcamSliderBottom' + (isFade ? ' show' : '')}>
-                                                                <TnWebcamSliderBottom />
-                                                            </div>
+                                                            />
+                                                            <input type="range"
+                                                                min="0"
+                                                                max={rangeSettings['cam' + item]['max']}
+                                                                step={rangeSettings['cam' + item]['step']}
+                                                                onChange={(e) => setCamRangeValues(e.target.value, item)}
+                                                                style={getBackgroundSize(item)}
+                                                                value={rangeValues['cam' + item]} />
+                                                            <p className='value' >value:{rangeValues['cam' + item]}</p>
                                                         </div>
-                                                    </>
-                                                )
+                                                        <div className={'TnWebcamSliderBottom-btn' + (isFade ? ' show' : '')} onClick={handleClick} ></div>
+                                                        <div className={'TnWebcamSliderBottom' + (isFade ? ' show' : '')}>
+                                                            <TnWebcamSliderBottom />
+                                                        </div>
+                                                    </div>
+                                                </>
+                                            )
                                             }
-                                            }
+                                        }
                                         />
                                     </div>
                                     : <div key={"a" + item}>Loading</div>
@@ -215,12 +215,12 @@ function TnWebcamNew(props) {
                 >
                     {
                         Object.keys(images).length === Object.keys(props.cams).length && Object.keys(props.cams)?.map((item, key) => {
-                            //console.log('length',Object.keys(images[key]).length)
-                            return (
-                                //(typeof images['cam'+item] !== 'undefined' && Object.keys(images['cam'+item]).length > 0) ? 
-                                ('cam' + item in images) ?
-                                    <div key={"a" + item}>
-                                        <img alt={''} src={images['cam' + item][0].thumbnail} />
+                                //console.log('length',Object.keys(images[key]).length)
+                                return(
+                                    //(typeof images['cam'+item] !== 'undefined' && Object.keys(images['cam'+item]).length > 0) ? 
+                                    ('cam'+item in images) ? 
+                                    <div key={"a"+item}>
+                                        <img alt={''} src={images['cam'+item].slice(-1)[0].thumbnail} /> 
                                     </div>
                                     : <div key={"a" + item}>
                                         <h1>{key}</h1>
