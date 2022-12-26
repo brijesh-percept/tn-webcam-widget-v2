@@ -18,7 +18,6 @@ const Index = (props) => {
     const acclon = props.Acclon;
 
     
-    
     return (
 
         <Provider store={store}>

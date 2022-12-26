@@ -74,7 +74,6 @@ tn-webcam-widget {
 	max-height: 50px;
 	object-fit: contain;
 	object-position: left top;
-	margin-bottom: 20px;
 }
 .tn-webcam-slider-top {
 	padding: 40px 43px;
@@ -217,6 +216,7 @@ tn-webcam-widget {
 	color: #fff;
 	text-decoration: none;
 	font-size: 14px;
+	line-height: normal;
 }
 
 .tn-webcam-slider-middle {
@@ -234,15 +234,13 @@ tn-webcam-widget {
 .tn-webcam-slider-middle > .slick-slider.thumbnail-slider {
 	height: auto;
 	position: absolute;
-	bottom: 240px;
+	bottom: 250px;
 	max-width: 400px;
 	right: 43px;
 	width: 100%;
 	display: none;
 }
-.tn-webcam-slider-middle > .slick-slider.thumbnail-slider.show {
-	display: block;
-}
+
 .tn-webcam-slider-middle > .slick-slider.thumbnail-slider .slick-slide {
 	padding: 10px;
 }
@@ -304,6 +302,7 @@ tn-webcam-widget {
 	right: 0;
 	bottom: auto;
 	top: 0;
+	padding: 40px;
 }
 .tn-webcam-slider-middle > .slick-slider .slide-bottom-content .slide-play-control button .image-gallery-svg {
 	width: 48px;
@@ -335,16 +334,11 @@ tn-webcam-widget {
 	transition: 0.5s all ease;
 	transform: scaleY(1);
 }
-.TnWebcamSliderBottom-btn.show {
-	border-top: 30px solid rgba(255,255,255,0.78);
-	border-bottom: 0;
-}
+
 .TnWebcamSliderBottom {
 	display: none;
 }
-.TnWebcamSliderBottom.show {
-	display: block;
-} 
+
   .image-gallery-slide {
 	opacity: 0 !important;
 	transition: opacity 3s ease,z-index 3s ease !important;
@@ -400,6 +394,37 @@ tn-webcam-widget {
 	margin: 0 auto;
 	width: 0;
 }
+.camera-interval-control {
+	position: absolute;
+	bottom: 120px;
+	z-index: 9;
+	left: 43px;
+}
+.tn-webcam-main.show-content .camera-interval-control {
+	bottom: 260px;
+}
+.camera-interval-control select, .camera-interval-control .react-datepicker-wrapper input {
+	background: #fff;
+	font-size: 12px;
+	padding: 4px 10px;
+	border-radius: 2px;
+	letter-spacing: 0.5px;
+	margin: 2px 0;
+	outline: none;
+	border: 1px solid rgba(0,0,0,0.5);
+}
+.react-datepicker__current-month, .react-datepicker-time__header, .react-datepicker-year-header {
+	line-height: normal;
+}
+.tn-webcam-main.show-content .TnWebcamSliderBottom,
+.tn-webcam-main.show-content .slick-slider.thumbnail-slider {
+	display: block;
+}
+.tn-webcam-main.show-content .TnWebcamSliderBottom-btn {
+	border-top: 30px solid rgba(255,255,255,0.78);
+	border-bottom: 0;
+}
+
 
 @media only screen and (max-width: 1920px) {
 	.slider-content-bottom a {
@@ -420,11 +445,7 @@ tn-webcam-widget {
 	.tn-webcam-logo, .tn-webcam-logo img {
 		max-width: 150px;
 		max-height: 30px;
-		margin-bottom: 10px;
 	}
-	/* .tn-webcam-zoom img {
-		max-width: 25px;
-	} */
 	.tn-webcam-live {
 		margin-right: 60px;
 	}
@@ -459,9 +480,7 @@ tn-webcam-widget {
 		border-right: 40px solid transparent;
 		border-bottom: 20px solid rgba(255,255,255,0.78);
 	}
-	.TnWebcamSliderBottom-btn.show {
-		border-top: 20px solid rgba(255,255,255,0.78);
-	}
+	
 	.tn-webcam-slider-middle > .slick-slider.thumbnail-slider {
 		max-width: 250px;
 	}
@@ -470,6 +489,22 @@ tn-webcam-widget {
 	}
 	.tn-webcam-slider-middle > .slick-slider.thumbnail-slider {
 		bottom: 200px;
+	}
+	.tn-webcam-main .camera-interval-control {
+		bottom: 100px;
+		left: 20px;
+	}
+	.tn-webcam-main.show-content .camera-interval-control {
+		bottom: 220px;
+	}
+	.tn-webcam-main.show-content .TnWebcamSliderBottom-btn {
+		border-top: 20px solid rgba(255,255,255,0.78);
+	}
+	.image-gallery-fullscreen-button {
+		padding: 18px 20px;
+	}
+	.tn-webcam-slider-middle > .slick-slider .slide-bottom-content {
+		padding: 0 20px;
 	}
 }
 @media only screen and (max-width: 1200px) {
@@ -490,5 +525,146 @@ tn-webcam-widget {
 		width: 30px;
 		height: 30px;
 		padding: 5px;
+	}
+}
+@media only screen and (max-width: 1024px) {
+	/* .tn-webcam-slider-middle > .slick-slider .slide-bottom-content {
+		position: static;
+	} */
+	.slider-content .slider-content-top > div {
+		border: none;
+		background: rgba(255,255,255,0.20);
+		padding: 5px 10px;
+		margin: 5px;
+		border-radius: 4px;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+	}
+	.slider-content-top > div.slider-content-date,
+	.slider-content-top > div.slider-content-place {
+		max-width: calc(25% - 10px);
+	}
+	.slider-content-top > div.slider-content-temp,
+	.slider-content-top > div.slider-social-nav {
+		max-width: calc(50% - 10px);
+	}
+	.slider-content-top > div.slider-content-text {
+		max-width: calc(100% - 130px);
+	}
+	.slider-content-top > div.slider-social-nav {
+		background: transparent;
+		padding: 0;
+		margin-left: auto;
+		display: flex;
+		align-items: flex-end;
+		justify-content: flex-end;
+		width: 110px;
+		max-width: none;
+	}
+	.slider-content-temp-lt {
+		max-width: 35px;
+	}
+
+	.tn-webcam-slider-middle > .slick-slider:first-child .image-gallery-content .image-gallery-slide .image-gallery-image {
+		max-height: 600px;
+		min-height: 600px;
+	}
+	.tn-webcam-slider-middle > .slick-slider .slide-bottom-content {
+		position: relative;
+		background: black;
+	}
+	.slide-bottom-content::before {
+		display: none;
+	}
+	.tn-webcam-slider-middle > .slick-slider.thumbnail-slider {
+		bottom: auto;
+		top: 500px;
+		right: 10px;
+	}
+	.tn-webcam-main.show-content .camera-interval-control {
+		bottom: auto;
+		top: 500px;
+	}
+}
+@media only screen and (max-width: 767px) {
+	.tn-webcam-slider-middle > .slick-slider .slide-bottom-content {
+		padding: 0 10px;
+	}
+	.slider-content-top > div span {
+		font-size: 12px;
+		line-height: 14px;
+	}
+	.slider-content-top > div.slider-content-date, 
+	.slider-content-top > div.slider-content-place {
+		max-width: calc(50% - 10px);
+	}
+	.slider-content-top > div.slider-content-temp, .slider-content-top > div.slider-social-nav {
+		max-width: calc(100% - 10px);
+	}
+	.slider-content-top > div.slider-content-text {
+		max-width: 100%;
+	}
+	.slider-content-bottom a {
+		font-size: 10px;
+	}
+	.tn-webcam-slider-middle > .slick-slider.thumbnail-slider {
+		max-width: 140px;
+	}
+	.tn-webcam-slider-middle > .slick-slider.thumbnail-slider .slick-slide {
+		padding: 2px;
+	}
+	.tn-webcam-slider-middle > .slick-slider.thumbnail-slider .slick-slide img {
+		height: 45px;
+		border: 1px solid rgba(0,0,0,0.35);
+	}
+	.tn-webcam-main.show-content .camera-interval-control {
+		top: 380px;
+		left: 10px;
+		transform: scale(0.8);
+		transform-origin: left bottom;
+	}
+	.tn-webcam-slider-middle > .slick-slider:first-child .image-gallery-content .image-gallery-slide .image-gallery-image {
+		max-height: 450px;
+		min-height: 450px;
+	}
+	.tn-webcam-slider-middle > .slick-slider.thumbnail-slider {
+		bottom: auto;
+		top: 395px;
+		right: 5px;
+	}
+	.TnWebcamSliderBottom-btn {
+		width: 50px;
+		border-left: 25px solid transparent;
+		border-right: 25px solid transparent;
+		border-bottom: 20px solid rgba(255,255,255,0.78);
+	}
+	.tn-webcam-slider-top {
+		padding: 10px;
+	}
+	.tn-webcam-slider-top::before {
+		background: linear-gradient(to bottom, rgba(0,0,0,1) 80%,rgba(0,0,0,0.48) 85%,rgba(255,255,255,0.01) 90%,rgba(255,255,255,0) 100%);
+	}
+	.slider-content-top > div span, 
+	.tn-webcam-live-txt {
+		font-size: 12px;
+		line-height: 14px;
+	}
+	.tn-webcam-live {
+		margin-right: 30px;
+	}
+	.tn-webcam-slider-top-rt {
+		margin-top: 5px;
+	}
+	.tn-webcam-live-dot {
+		height: 6px;
+		width: 6px;
+		margin-right: 5px;
+	}
+	.tn-webcam-logo, .tn-webcam-logo img {
+		max-width: 130px;
+	}
+	.image-gallery-fullscreen-button {
+		padding: 12px 10px;
 	}
 }
