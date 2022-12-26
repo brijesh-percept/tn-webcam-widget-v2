@@ -18,6 +18,7 @@ const Index = (props) => {
     const acclon = props.Acclon;
 
     
+    
     return (
 
         <Provider store={store}>
@@ -44,9 +45,9 @@ const Index = (props) => {
                             <span className="tn-webcam-live-dot"></span>
                             <p className="tn-webcam-live-txt">live</p>
                             </div>
-                            <div className="tn-webcam-zoom">
-                            <img src="https://webcamwidget.fullmarketing.at/assets/img/zoom.svg" alt="zoom" />
-                            </div>
+                            {/* <div className="tn-webcam-zoom">
+                                <img src="https://webcamwidget.fullmarketing.at/assets/img/zoom.svg" alt="zoom" />
+                            </div> */}
                         </div>
 
                         </div>
