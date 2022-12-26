@@ -85,6 +85,11 @@ function TnWebcamNew(props) {
 
     const [isFade, setIsFade] = useState(false);
 
+    // const [sidebar,setSidebar] = useState(false);
+    // const sidebarclick = () => {
+    //     setSidebar(!sidebar);
+    // }
+
     const handleClick = event => {
         setIsFade(!isFade);
     };
@@ -199,6 +204,8 @@ function TnWebcamNew(props) {
                     speed={1000}
                     ref={slider => (setNav1(slider))}
                     draggable={false}
+
+                    
                 >
                     {
                         Object.keys(props.cams)?.map((item, key) => {
@@ -305,6 +312,8 @@ function TnWebcamNew(props) {
                     slidesToShow={2}
                     swipeToSlide={true}
                     focusOnSelect={true}
+
+                    className={'thumbnail-slider' + (isFade ? ' show' : '')}
                 >
                     {
                         Object.keys(images).length === Object.keys(props.cams).length && Object.keys(props.cams)?.map((item, key) => {
