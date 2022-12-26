@@ -164,7 +164,34 @@ function TnWebcamNew(props) {
     }, [props.cams])
 
     return (
-        Object.keys(images).length === Object.keys(props.cams).length ?
+        <div className='tn-webcam-component'>
+                <h1 className='main-title'>TN-Webcam</h1>
+
+                <div className={'tn-webcam-main' + (isFade ? ' show-content' : '')}>
+                    <div className='tn-webcam-sidebar'></div>
+                    <div className='tn-webcam-details-area'>
+                    <div className='tn-webcam-slider'>
+                        <div className='tn-webcam-slider-top'>
+
+                        <div className='tn-webcam-slider-top-lt'>
+                            <div className='tn-webcam-logo'>
+                            <img src="https://www.walchsee.co/media/cms/walchsee.co/u/2022/04/walchsee-white.png" alt='logo' />
+                            </div>                          
+                        </div>
+
+                        <div className='tn-webcam-slider-top-rt'>
+                            <div className="tn-webcam-live">
+                            <span className="tn-webcam-live-dot"></span>
+                            <p className="tn-webcam-live-txt">live</p>
+                            </div>
+                            {/* <div className="tn-webcam-zoom">
+                                <img src="https://webcamwidget.fullmarketing.at/assets/img/zoom.svg" alt="zoom" />
+                            </div> */}
+                        </div>
+
+                        </div>
+                        <div className='tn-webcam-slider-middle'>
+        {Object.keys(images).length === Object.keys(props.cams).length ?
             <>
                 <Slider
                     asNavFor={nav2}
@@ -242,8 +269,8 @@ function TnWebcamNew(props) {
                                                                 </p>
                                                             </div>    
                                                         </div>
-                                                        <div className={'TnWebcamSliderBottom-btn' + (isFade ? ' show' : '')} onClick={handleClick} ></div>
-                                                        <div className={'TnWebcamSliderBottom' + (isFade ? ' show' : '')}>
+                                                        <div className='TnWebcamSliderBottom-btn' onClick={handleClick} ></div>
+                                                        <div className='TnWebcamSliderBottom'>
                                                             <TnWebcamSliderBottom />
                                                         </div>
                                                     </div>
@@ -267,8 +294,7 @@ function TnWebcamNew(props) {
                     swipeToSlide={true}
                     focusOnSelect={true}
 
-                    className={'thumbnail-slider' + (isFade ? ' show' : '')}
-                >
+                    className='thumbnail-slider'>
                     {
                         Object.keys(images).length === Object.keys(props.cams).length && Object.keys(props.cams)?.map((item, key) => {
                                 return(
@@ -285,11 +311,19 @@ function TnWebcamNew(props) {
                     }
                 </Slider>
 
-            </>
+            </>            
             :
             <>
                 <p>Loading....</p>
             </>
+        }
+            </div>
+                       
+
+                    </div>
+                    </div>
+                </div>
+                </div>
     )
 }
 
