@@ -59,6 +59,11 @@ function TnWebcamNew(props) {
 
     const [isFade, setIsFade] = useState(false);
 
+    // const [sidebar,setSidebar] = useState(false);
+    // const sidebarclick = () => {
+    //     setSidebar(!sidebar);
+    // }
+
     const handleClick = event => {
         setIsFade(!isFade);
     };
@@ -152,6 +157,8 @@ function TnWebcamNew(props) {
                     speed={1000}
                     ref={slider => (setNav1(slider))}
                     draggable={false}
+
+                    
                 >
                     {
                         Object.keys(props.cams)?.map((item, key) => {
@@ -179,14 +186,16 @@ function TnWebcamNew(props) {
                                                                 isPlaying={isPlaying}
 
                                                             />
-                                                            <input type="range"
-                                                                min="0"
-                                                                max={rangeSettings['cam' + item]['max']}
-                                                                step={rangeSettings['cam' + item]['step']}
-                                                                onChange={(e) => setCamRangeValues(e.target.value, item)}
-                                                                style={getBackgroundSize(item)}
-                                                                value={rangeValues['cam' + item]} />
-                                                            <p className='value' >value:{rangeValues['cam' + item]}</p>
+                                                            <div className='main-range-wrap'>
+                                                                <input type="range"
+                                                                    min="0"
+                                                                    max={rangeSettings['cam' + item]['max']}
+                                                                    step={rangeSettings['cam' + item]['step']}
+                                                                    onChange={(e) => setCamRangeValues(e.target.value, item)}
+                                                                    style={getBackgroundSize(item)}
+                                                                    value={rangeValues['cam' + item]} />
+                                                                <p className='current-range-time' >{images['cam'+item][rangeValues['cam' + item]].originalTitle}</p>
+                                                            </div>
                                                         </div>
                                                         <div className={'TnWebcamSliderBottom-btn' + (isFade ? ' show' : '')} onClick={handleClick} ></div>
                                                         <div className={'TnWebcamSliderBottom' + (isFade ? ' show' : '')}>
@@ -212,6 +221,8 @@ function TnWebcamNew(props) {
                     slidesToShow={2}
                     swipeToSlide={true}
                     focusOnSelect={true}
+
+                    className={'thumbnail-slider' + (isFade ? ' show' : '')}
                 >
                     {
                         Object.keys(images).length === Object.keys(props.cams).length && Object.keys(props.cams)?.map((item, key) => {

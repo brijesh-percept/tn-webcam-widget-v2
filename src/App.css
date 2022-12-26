@@ -7,6 +7,7 @@
 @import "~react-image-gallery/styles/css/image-gallery.css";
 @import "slick-carousel/slick/slick.css";
 @import "slick-carousel/slick/slick-theme.css";
+@import "Range.css";
 
 * {
 	box-sizing: border-box;
@@ -36,14 +37,17 @@ tn-webcam-widget {
 }
 .tn-webcam-slider {
 	position: relative;
-	min-height: 1080px;
+	height: 100%;
 	background: #464646;
 	display: flex;
 	flex-wrap: wrap;
 	align-content: space-between;
+	max-height: 1080px;
 }
 .tn-webcam-slider-top {
-    position: relative;
+	position: absolute;
+	top: 0;
+	z-index: 1;
 }
 .tn-webcam-slider-top::before {
 	content: "";
@@ -75,6 +79,7 @@ tn-webcam-widget {
 	padding: 40px 43px;
 	display: flex;
 	justify-content: space-between;
+	pointer-events: none;
 }
 .tn-webcam-slider-top > div {
 	position: relative;
@@ -107,10 +112,10 @@ tn-webcam-widget {
 	letter-spacing: 3px;
 	margin: 0;
 }
-.tn-webcam-zoom img {
+/* .tn-webcam-zoom img {
 	max-width: 55px;
 	width: 100%;
-}
+} */
 .slider-content {
 	display: flex;
 	color: #fff;
@@ -225,109 +230,34 @@ tn-webcam-widget {
 	height: 100%;
 	overflow: hidden;
 }
-.tn-webcam-slider-middle > .slick-slider:first-child * {
-	height: 100%;
-}
-/* .tn-webcam-slider-middle > .slick-slider:first-child button {
-	height: auto;
-	margin-bottom: 170px;
-} */
-.tn-webcam-slider-middle > .slick-slider:last-child {
+.tn-webcam-slider-middle > .slick-slider.thumbnail-slider {
 	height: auto;
 	position: absolute;
-	bottom: 170px;
+	bottom: 240px;
 	max-width: 400px;
 	right: 43px;
 	width: 100%;
+	display: none;
 }
-.tn-webcam-slider-middle > .slick-slider:last-child .slick-slide {
+.tn-webcam-slider-middle > .slick-slider.thumbnail-slider.show {
+	display: block;
+}
+.tn-webcam-slider-middle > .slick-slider.thumbnail-slider .slick-slide {
 	padding: 10px;
 }
-.tn-webcam-slider-middle > .slick-slider:last-child .slick-slide img {
+.tn-webcam-slider-middle > .slick-slider.thumbnail-slider .slick-slide img {
 	width: 100%;
-	height: auto;
-	border: 2px solid rgba(0,0,0,0.5);
+	height: 103px;
+	border: 2px solid rgba(0,0,0,0.35);
+	object-fit: cover;
 }
-.tn-webcam-slider-middle > .slick-slider:first-child .slick-list {
-	position: relative;
-	display: block;
-	overflow: hidden;
-	margin: 0;
-	padding: 0;
-	height: 100%;
-}
-
 .tn-webcam-slider-middle > .slick-slider:first-child .image-gallery-content .image-gallery-slide .image-gallery-image {
 	max-height: 1080px;
-	height: 100%;
 	object-fit: cover;
 	min-width: 100%;
+	min-height: 1080px;
+	pointer-events: none;
 }
-@media only screen and (max-width: 1920px) {
-	.slider-content-bottom a {
-		font-size: 12px;
-	}
-	.slider-content-top > div {
-		padding: 0 25px;
-	}
-	.slider-content-top > div span,
-	.tn-webcam-live-txt {
-		font-size: 16px;
-		line-height: 24px;
-	}
-	.slider-social-nav a {
-		width: 38px;
-		height: 38px;
-	}
-	.tn-webcam-logo, .tn-webcam-logo img {
-		max-width: 150px;
-		max-height: 30px;
-		margin-bottom: 10px;
-	}
-	.tn-webcam-zoom img {
-		max-width: 25px;
-	}
-	.tn-webcam-live {
-		margin-right: 30px;
-	}
-	.tn-webcam-live-dot {
-		height: 10px;
-		width: 10px;
-	}
-	/* .tn-webcam-slider {
-		min-height: 700px;
-	}
-	.tn-webcam-slider-middle > .slick-slider:first-child .image-gallery-content .image-gallery-slide .image-gallery-image {
-		max-height: 700px;
-	} */
-	.slider-content > div {
-		padding: 15px 0;
-	}
-	.tn-webcam-slider-top {
-		padding: 20px;
-	}
-}
-@media only screen and (max-width: 1200px) {
-	.slider-content-top > div {
-		padding: 0 15px;
-	}
-	.slider-content > div {
-		padding: 10px 0;
-	}
-	.slider-content-top > div span {
-		font-size: 14px;
-		line-height: 18px;
-	}
-	.slider-content-temp-lt img {
-		width: 35px;
-	}
-	.slider-social-nav a {
-		width: 30px;
-		height: 30px;
-		padding: 5px;
-	}
-}
-
 
 
 .tn-webcam-slider-middle > .slick-slider .slide-bottom-content {
@@ -355,7 +285,8 @@ tn-webcam-widget {
 	display: flex;
 	width: 100%;
 	height: auto;
-	padding: 30px 0;
+	padding: 30px 0 10px;
+	align-items: center;
 }
 
 .tn-webcam-slider-middle > .slick-slider .slide-bottom-content .slide-play-control button {
@@ -365,12 +296,29 @@ tn-webcam-widget {
 	max-width: 48px;
 	padding: 0;
 }
+.image-gallery-icon:hover {
+	color: #fff;
+}
+.image-gallery-fullscreen-button {
+	right: 0;
+	bottom: auto;
+	top: 0;
+}
+.tn-webcam-slider-middle > .slick-slider .slide-bottom-content .slide-play-control button .image-gallery-svg {
+	width: 48px;
+	height: 48px;
+	fill: #fff;
+}
+.image-gallery-using-mouse .image-gallery-icon:focus {
+	outline: none;
+}
 .slide-play-control input[type="range"] {
 	width: 100%;
 	margin: 0;
 	position: relative;
 	z-index: 1;
 }
+
 .TnWebcamSliderBottom-btn {
 	font-size: 0;
 	display: block;
@@ -387,10 +335,8 @@ tn-webcam-widget {
 	transform: scaleY(1);
 }
 .TnWebcamSliderBottom-btn.show {
-	transform: scaleY(0);
-}
-.value {
-	display: none;
+	border-top: 30px solid rgba(255,255,255,0.78);
+	border-bottom: 0;
 }
 .TnWebcamSliderBottom {
 	display: none;
@@ -418,11 +364,130 @@ tn-webcam-widget {
  	z-index: 0 !important;
 }
 
-/* .playing .image-gallery-slides > div.image-gallery-slide.center {
-	  animation: fade 0.5s 1 ;
-	  -webkit-animation: fade 0.5s 1 ;
-} */
-/* .image-gallery-slides > div.image-gallery-slide img{
-	animation: fade 1s 1 linear;
-	transition: opacity 1s ease !important;
-} */
+.main-range-wrap {
+	position: relative;
+	width: 100%;
+}
+.current-range-time {
+	position: absolute;
+	background: #fff;
+	top: -27px;
+	left: calc(0% - 25px);
+	height: auto !important;
+	margin: 0;
+	display: inline-block;
+	line-height: 20px;
+	z-index: 1;
+	padding: 0 2px;
+	border-radius: 2px;
+	width: 70px;
+	text-align: center;
+	font-size: 12px;
+	text-transform: uppercase;
+	font-weight: 700;
+}
+.current-range-time::before {
+	content: "";
+	border-top: 8px solid #fff;
+	border-left: 6px solid transparent;
+	border-right: 6px solid transparent;
+	display: inline-block;
+	position: absolute;
+	top: 100%;
+	left: 0;
+	right: 0;
+	margin: 0 auto;
+	width: 0;
+}
+
+@media only screen and (max-width: 1920px) {
+	.slider-content-bottom a {
+		font-size: 12px;
+	}
+	.slider-content-top > div {
+		padding: 0 25px;
+	}
+	.slider-content-top > div span,
+	.tn-webcam-live-txt {
+		font-size: 16px;
+		line-height: 24px;
+	}
+	.slider-social-nav a {
+		width: 38px;
+		height: 38px;
+	}
+	.tn-webcam-logo, .tn-webcam-logo img {
+		max-width: 150px;
+		max-height: 30px;
+		margin-bottom: 10px;
+	}
+	/* .tn-webcam-zoom img {
+		max-width: 25px;
+	} */
+	.tn-webcam-live {
+		margin-right: 60px;
+	}
+	.tn-webcam-live-dot {
+		height: 10px;
+		width: 10px;
+	}
+	.tn-webcam-slider {
+		max-height: 700px;
+	}
+	.tn-webcam-slider-middle > .slick-slider:first-child .image-gallery-content .image-gallery-slide .image-gallery-image {
+		max-height: 700px;
+		min-height: 700px;
+	}
+	.slider-content > div {
+		padding: 15px 0;
+	}
+	.tn-webcam-slider-top {
+		padding: 20px;
+	}
+	.tn-webcam-slider-middle > .slick-slider .slide-bottom-content .slide-play-control button {
+		max-width: 25px;
+		margin: 0 15px 0 0;
+	}
+	.tn-webcam-slider-middle > .slick-slider .slide-bottom-content .slide-play-control button .image-gallery-svg {
+		width: 25px;
+		height: 25px;
+	}
+	.TnWebcamSliderBottom-btn {
+		width: 80px;
+		border-left: 40px solid transparent;
+		border-right: 40px solid transparent;
+		border-bottom: 20px solid rgba(255,255,255,0.78);
+	}
+	.TnWebcamSliderBottom-btn.show {
+		border-top: 20px solid rgba(255,255,255,0.78);
+	}
+	.tn-webcam-slider-middle > .slick-slider.thumbnail-slider {
+		max-width: 250px;
+	}
+	.tn-webcam-slider-middle > .slick-slider.thumbnail-slider .slick-slide img {
+		height: 70px;
+	}
+	.tn-webcam-slider-middle > .slick-slider.thumbnail-slider {
+		bottom: 200px;
+	}
+}
+@media only screen and (max-width: 1200px) {
+	.slider-content-top > div {
+		padding: 0 15px;
+	}
+	.slider-content > div {
+		padding: 10px 0;
+	}
+	.slider-content-top > div span {
+		font-size: 14px;
+		line-height: 18px;
+	}
+	.slider-content-temp-lt img {
+		width: 35px;
+	}
+	.slider-social-nav a {
+		width: 30px;
+		height: 30px;
+		padding: 5px;
+	}
+}
