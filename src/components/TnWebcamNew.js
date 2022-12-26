@@ -51,14 +51,17 @@ function TnWebcamNew(props) {
     const setCamCameraInterval = (values, camid) => {
         cameraInterval['cam' + camid] = values;
         setCameraInterval({ ...cameraInterval });
+        if(values !== 'daily'){
+            getCameraImages(camid, values);
+        }
     }
     const setCamDateFilter = (selected_date, camid) => {
         var old_date = dateSelected['cam' + camid] ? dateSelected['cam' + camid] : null;
         dateSelected['cam' + camid] = selected_date;
         setDateFilter({ ...dateSelected });
         if(old_date && old_date.getTime() !== selected_date.getTime()){ //we need to fetch images of the selected date for current camera
-            console.log("old date=", old_date," and selecteddate=", selected_date);
-            console.log("Make an API call for cam",camid, " and for the ", selected_date);
+            //console.log("old date=", old_date," and selecteddate=", selected_date);
+            //console.log("Make an API call for cam",camid, " and for the ", selected_date);
             getCameraImages(camid, 'daily', selected_date);
         }
     }
@@ -92,7 +95,7 @@ function TnWebcamNew(props) {
         (async () => {
             var request = {
                 id: camid,
-                type: 'daily',
+                type: type,
                 date: format(date, "yyyy-MM-dd")
             }
             await getCamArchive(request).then((data) => {
@@ -110,8 +113,9 @@ function TnWebcamNew(props) {
                     })
                     
                     setCamImages(imagesArr, camid);
-                    var setting = {'max':imagesArr.length, 'step':1}
+                    var setting = {'max':imagesArr.length-1, 'step':1}
                     setCamRangeSettings(setting, camid);
+                    setCamRangeValues(imagesArr.length-1, camid);
                 }
 
             });
@@ -157,9 +161,37 @@ function TnWebcamNew(props) {
         }
 
     }, [props.cams])
-
+    console.log("images", images);
+    console.log("rangeValues", rangeValues);
     return (
-        Object.keys(images).length === Object.keys(props.cams).length ?
+        <div className='tn-webcam-component'>
+                <h1 className='main-title'>TN-Webcam</h1>
+
+                <div className='tn-webcam-main'>
+                    <div className='tn-webcam-sidebar'></div>
+                    <div className='tn-webcam-details-area'>
+                    <div className='tn-webcam-slider'>
+                        <div className='tn-webcam-slider-top'>
+
+                        <div className='tn-webcam-slider-top-lt'>
+                            <div className='tn-webcam-logo'>
+                            <img src="https://www.walchsee.co/media/cms/walchsee.co/u/2022/04/walchsee-white.png" alt='logo' />
+                            </div>                          
+                        </div>
+
+                        <div className='tn-webcam-slider-top-rt'>
+                            <div className="tn-webcam-live">
+                            <span className="tn-webcam-live-dot"></span>
+                            <p className="tn-webcam-live-txt">live</p>
+                            </div>
+                            <div className="tn-webcam-zoom">
+                            <img src="https://webcamwidget.fullmarketing.at/assets/img/zoom.svg" alt="zoom" />
+                            </div>
+                        </div>
+
+                        </div>
+                        <div className='tn-webcam-slider-middle'>
+        {Object.keys(images).length === Object.keys(props.cams).length ?
             <>
                 <Slider
                     asNavFor={nav2}
@@ -208,7 +240,15 @@ function TnWebcamNew(props) {
                                                                     maxDate={new Date()}
                                                                     />
                                                             </>
-                                                            : ''
+                                                            : <p class="time-label">{
+                                                                images['cam' + item][rangeValues['cam' + item]].originalTitle
+                                                                /*
+                                                                rangeValues['cam' + item]-1 >=0 ?
+                                                                images['cam' + item][rangeValues['cam' + item]-1].originalTitle
+                                                                :
+                                                                images['cam' + item][rangeValues['cam' + item]].originalTitle
+                                                                */
+                                                                }</p>
                                                         }
                                                     </div>
                                                     <div className='slide-bottom-content'>
@@ -218,20 +258,28 @@ function TnWebcamNew(props) {
                                                                 isPlaying={isPlaying}
 
                                                             />
-                                                            <input type="range"
-                                                                min="0"
-                                                                max={rangeSettings['cam' + item]['max']}
-                                                                step={rangeSettings['cam' + item]['step']}
-                                                                onChange={(e) => {setCamRangeValues(e.target.value, item); changeCamGalleryImage(e.target.value, item);}}
-                                                                style={getBackgroundSize(item)}
-                                                                value={rangeValues['cam' + item]} />
-                                                            <p className='value' >{
-                                                                rangeValues['cam' + item]-1 >=0 ?
-                                                                images['cam' + item][rangeValues['cam' + item]-1].originalTitle
-                                                                :
-                                                                images['cam' + item][rangeValues['cam' + item]].originalTitle
-                                                                }
-                                                            </p>
+                                                            {cameraInterval['cam'+item] === 'daily' ? 
+                                                                <>
+                                                                <input type="range"
+                                                                    min="0"
+                                                                    max={rangeSettings['cam' + item]['max']}
+                                                                    step={rangeSettings['cam' + item]['step']}
+                                                                    onChange={(e) => {setCamRangeValues(e.target.value, item); changeCamGalleryImage(e.target.value, item);}}
+                                                                    style={getBackgroundSize(item)}
+                                                                    value={rangeValues['cam' + item]} />
+                                                                <p className='value' >{
+                                                                    images['cam' + item][rangeValues['cam' + item]].originalTitle
+                                                                    /*
+                                                                    rangeValues['cam' + item]-1 >=0 ?
+                                                                    images['cam' + item][rangeValues['cam' + item]-1].originalTitle
+                                                                    :
+                                                                    images['cam' + item][rangeValues['cam' + item]].originalTitle
+                                                                    */
+                                                                    }
+                                                                </p>
+                                                                </>
+                                                                : ''
+                                                            }    
                                                         </div>
                                                         <div className={'TnWebcamSliderBottom-btn' + (isFade ? ' show' : '')} onClick={handleClick} ></div>
                                                         <div className={'TnWebcamSliderBottom' + (isFade ? ' show' : '')}>
@@ -279,6 +327,14 @@ function TnWebcamNew(props) {
             <>
                 <p>Loading....</p>
             </>
+        }
+        </div>
+                       
+
+                       </div>
+                       </div>
+                   </div>
+                   </div>
     )
 }
 
