@@ -27,6 +27,7 @@ function TnWebcamNew(props) {
 
     const [images, setImages] = useState([]);
 
+    const [activeCamera, setActiveCamera] = useState(null);
     const [rangeValues, setRangeValues] = useState([]);
     const [rangeSettings, setRangeSettings] = useState([]);
     const [isSliderPlayings, setIsSliderPlaying] = useState([]);
@@ -60,8 +61,6 @@ function TnWebcamNew(props) {
         dateSelected['cam' + camid] = selected_date;
         setDateFilter({ ...dateSelected });
         if(old_date && old_date.getTime() !== selected_date.getTime()){ //we need to fetch images of the selected date for current camera
-            //console.log("old date=", old_date," and selecteddate=", selected_date);
-            //console.log("Make an API call for cam",camid, " and for the ", selected_date);
             getCameraImages(camid, 'daily', selected_date);
         }
     }
@@ -94,7 +93,15 @@ function TnWebcamNew(props) {
         setIsFade(!isFade);
     };
 
+    const setCameraByIndex = (index) => {
+        let cameras = Object.keys(props.cams);
+        if(index in cameras){
+            setActiveCamera(cameras[index]);
+        }
+    }
+
     const cameraGallery = useRef({});
+    const cameraLogo = useRef({});
 
     const getCameraImages = (camid, type='daily', date=new Date())=>{
         (async () => {
@@ -132,6 +139,7 @@ function TnWebcamNew(props) {
     useEffect(() => {
         if (props.cams.length === 0) {
             var cams = props.camids.split(',');
+            setActiveCamera(cams[0]);
             cams.forEach((camid) => {
                 // initialize all camera slider
                 setCamRangeValues(0, camid); 
@@ -166,8 +174,12 @@ function TnWebcamNew(props) {
         }
 
     }, [props.cams])
-    console.log("images", images);
-    console.log("rangeValues", rangeValues);
+    
+    useEffect(()=>{
+        if(activeCamera && activeCamera in props.cams){
+            cameraLogo.current.src= props.cams[activeCamera].logo;
+        }
+    },[activeCamera]);
     return (
         <div className='tn-webcam-component'>
                 <h1 className='main-title'>TN-Webcam</h1>
@@ -180,7 +192,7 @@ function TnWebcamNew(props) {
 
                         <div className='tn-webcam-slider-top-lt'>
                             <div className='tn-webcam-logo'>
-                            <img src="https://www.walchsee.co/media/cms/walchsee.co/u/2022/04/walchsee-white.png" alt='logo' />
+                            <img src={''} alt='logo' ref={(e)=>(cameraLogo.current = e)} />
                             </div>                          
                         </div>
 
@@ -189,9 +201,6 @@ function TnWebcamNew(props) {
                             <span className="tn-webcam-live-dot"></span>
                             <p className="tn-webcam-live-txt">live</p>
                             </div>
-                            {/* <div className="tn-webcam-zoom">
-                                <img src="https://webcamwidget.fullmarketing.at/assets/img/zoom.svg" alt="zoom" />
-                            </div> */}
                         </div>
 
                         </div>
@@ -247,14 +256,8 @@ function TnWebcamNew(props) {
                                                                     maxDate={new Date()}
                                                                     />
                                                             </>
-                                                            : <p class="time-label">{
+                                                            : <p className="time-label">{
                                                                 images['cam' + item][rangeValues['cam' + item]].originalTitle
-                                                                /*
-                                                                rangeValues['cam' + item]-1 >=0 ?
-                                                                images['cam' + item][rangeValues['cam' + item]-1].originalTitle
-                                                                :
-                                                                images['cam' + item][rangeValues['cam' + item]].originalTitle
-                                                                */
                                                                 }</p>
                                                         }
                                                     </div>
@@ -275,7 +278,7 @@ function TnWebcamNew(props) {
                                                                     onChange={(e) => {setCamRangeValues(e.target.value, item); changeCamGalleryImage(e.target.value, item);}}
                                                                     style={getBackgroundSize(item)}
                                                                     value={rangeValues['cam' + item]} />
-                                                                <p className='current-range-time' >{
+                                                                <p className='current-range-time' style={{left: `calc(${(rangeValues['cam' + item]*100/rangeSettings['cam' + item]['max'])-3}% + (${10 - ((rangeValues['cam' + item]*100/rangeSettings['cam' + item]['max']) * 0.2)}px))`}} >{
                                                                     images['cam' + item][rangeValues['cam' + item]].originalTitle
                                                                     }
                                                                 </p>
@@ -308,8 +311,12 @@ function TnWebcamNew(props) {
                     slidesToShow={2}
                     swipeToSlide={true}
                     focusOnSelect={true}
-
-                    className='thumbnail-slider'>
+                    className='thumbnail-slider'
+                    afterChange={ (newIndex) => {
+                            setCameraByIndex(newIndex);
+                        }
+                    }
+                    >
                     {
                         Object.keys(images).length === Object.keys(props.cams).length && Object.keys(props.cams)?.map((item, key) => {
                                 return(
