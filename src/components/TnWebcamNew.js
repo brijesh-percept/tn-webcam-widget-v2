@@ -267,6 +267,7 @@ function TnWebcamNew(props) {
                                                             />
                                                             {cameraInterval['cam'+item] === 'daily' ? 
                                                                 <>
+                                                                <div className="main-range-wrap">
                                                                 <input type="range"
                                                                     min="0"
                                                                     max={rangeSettings['cam' + item]['max']}
@@ -274,16 +275,11 @@ function TnWebcamNew(props) {
                                                                     onChange={(e) => {setCamRangeValues(e.target.value, item); changeCamGalleryImage(e.target.value, item);}}
                                                                     style={getBackgroundSize(item)}
                                                                     value={rangeValues['cam' + item]} />
-                                                                <p className='value' >{
+                                                                <p className='current-range-time' >{
                                                                     images['cam' + item][rangeValues['cam' + item]].originalTitle
-                                                                    /*
-                                                                    rangeValues['cam' + item]-1 >=0 ?
-                                                                    images['cam' + item][rangeValues['cam' + item]-1].originalTitle
-                                                                    :
-                                                                    images['cam' + item][rangeValues['cam' + item]].originalTitle
-                                                                    */
                                                                     }
                                                                 </p>
+                                                                </div>
                                                                 </>
                                                                 : ''
                                                             }    
