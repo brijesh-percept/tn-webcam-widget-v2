@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { loadWebcamsAction/*, loadWebcamArchiveAction*/ } from '../actions/webcamAction';
 import { connect } from 'react-redux';
 import getCams from './api/cams';
+import getWeatherForcast from './api/weather';
+import getAddress from './api/address';
 import getCamArchive from './api/camArchive';
 import ImageGallery from 'react-image-gallery';
 import Slider from "react-slick";
@@ -33,6 +35,8 @@ function TnWebcamNew(props) {
     const [isSliderPlayings, setIsSliderPlaying] = useState([]);
     const [cameraInterval, setCameraInterval] = useState([]);
     const [dateSelected, setDateFilter] = useState([]);
+    const [weatherData, setWeatherData] = useState([]);
+    const [addressData, setAddressData] = useState([]);
     const MAX = 100;
     const getBackgroundSize = (camid) => {
         return {
@@ -65,6 +69,16 @@ function TnWebcamNew(props) {
         }
     }
 
+    const setCamWeatherData = (data, camid) => {
+        weatherData['cam' + camid] = data;
+        setWeatherData({...weatherData});      
+    }
+
+    const setCamAddressData = (data, camid) => {
+        addressData['cam' + camid] = data;
+        setAddressData({...addressData});      
+    }
+    
     const changeCamGalleryImage = (values, camid) => {
         if('cam'+camid in cameraGallery.current){
             if(typeof images['cam'+camid][values-1] !== 'undefined'){
@@ -139,7 +153,6 @@ function TnWebcamNew(props) {
     useEffect(() => {
         if (props.cams.length === 0) {
             var cams = props.camids.split(',');
-            setActiveCamera(cams[0]);
             cams.forEach((camid) => {
                 // initialize all camera slider
                 setCamRangeValues(0, camid); 
@@ -149,6 +162,8 @@ function TnWebcamNew(props) {
                 setIsCamSliderPlaying(true, camid);
                 setCamCameraInterval('daily', camid);
                 setCamDateFilter(new Date(), camid);
+                setCamWeatherData(null, camid);
+                setCamAddressData(null, camid);
             });
             (async () => {
                 var request = {
@@ -169,6 +184,9 @@ function TnWebcamNew(props) {
             (async () => {
                 Object.values(props.cams).forEach((item, key) => {
                     getCameraImages(item.id);
+                    if(key === 0){ //make the first camera active
+                        setActiveCamera(item.id);
+                    }
                 });
             })();
         }
@@ -178,6 +196,34 @@ function TnWebcamNew(props) {
     useEffect(()=>{
         if(activeCamera && activeCamera in props.cams){
             cameraLogo.current.src= props.cams[activeCamera].logo;
+            if(weatherData['cam' + activeCamera] === null
+                && props.cams[activeCamera].latitude
+                && props.cams[activeCamera].longitude){
+                (async()=>{ 
+                    var request = {
+                        lat: props.cams[activeCamera].latitude,
+                        lon: props.cams[activeCamera].longitude,
+                        alt: 200, 
+                        v: 'premium'
+                    }
+                    await getWeatherForcast(request).then((data)=>{
+                        setCamWeatherData(data, activeCamera);
+                    });                    
+                })();
+            }
+            if(addressData['cam' + activeCamera] === null
+                && props.cams[activeCamera].latitude
+                && props.cams[activeCamera].longitude){
+                (async()=>{ 
+                    var request = {
+                        lat: props.cams[activeCamera].latitude,
+                        lon: props.cams[activeCamera].longitude
+                    }
+                    await getAddress(request).then((data)=>{
+                        setCamAddressData(data, activeCamera);
+                    });                    
+                })();
+            }
         }
     },[activeCamera]);
     return (
@@ -213,7 +259,6 @@ function TnWebcamNew(props) {
                     speed={1000}
                     ref={slider => (setNav1(slider))}
                     draggable={false}
-
                     
                 >
                     {
@@ -289,7 +334,7 @@ function TnWebcamNew(props) {
                                                         </div>
                                                         <div className='TnWebcamSliderBottom-btn' onClick={handleClick} ></div>
                                                         <div className='TnWebcamSliderBottom'>
-                                                            <TnWebcamSliderBottom />
+                                                            <TnWebcamSliderBottom data={weatherData['cam'+item]} camera={props.cams[item]} lang={props.lang} place={addressData['cam'+item]}  />
                                                         </div>
                                                     </div>
                                                 </>

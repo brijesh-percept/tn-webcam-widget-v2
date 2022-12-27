@@ -1,9 +1,23 @@
 import React, {useState} from 'react';
+import { format, parseISO } from 'date-fns';
+import {MODIMAGEPATH} from './api';
 
 
-const TnWebcamSliderBottom = () => {
+const TnWebcamSliderBottom = (props) => {
+    const localTime = props.data?.Info?.Forecast_Calculated_LocalTime;
+    const date_time = (typeof localTime !== 'undefined') ? localTime.split('T') : [];
+    let date = (typeof date_time[0] !== 'undefined') ? date_time[0] : '';
+    const time = (typeof date_time[1] !== 'undefined') ? date_time[1].split('+')[0] : '';
+    let imageIcon = props.data?.Current?.Icon;
 
-   
+    if(imageIcon){
+        imageIcon = imageIcon.replace(".png", ".svg");
+    }
+    
+    if(date){
+        date = format(parseISO(date), "dd.MM.yyyy");        
+    }
+    //console.log("props.address", props.address);
     return(
         <>
              <div className='tn-webcam-slider-bottom'>
@@ -12,44 +26,55 @@ const TnWebcamSliderBottom = () => {
 
                     <div className="slider-content">
                         <div className="slider-content-top">
-                            <div className="slider-content-date">
-                                <span className="slide-content-title">04:46</span>
-                                <span>21.12.2022</span>
-                            </div>
-                            <div className="slider-content-place">
-                                <span className="slide-content-title">Walchsee</span>
-                                <span>AT | Tirol</span>
-                            </div>
-                            <div className="slider-content-temp">
-                                <div className="slider-content-temp-lt">
-                                
-                                    <img src="https://www.busy-shaw.82-165-64-236.plesk.page/modules/mod_tnwebcam/images/svg/sun_bright_cloud.svg" alt="" />
-                                
+                                <div className="slider-content-date">
+                                    <span className="slide-content-title">{time}</span>
+                                    <span>{date}</span>
                                 </div>
-                                <div className="slider-content-temp-rt">
-                                    <span className="slide-content-title">6°C</span>
-                                    <span>0 l/m² | 14 %</span> 
+                                <div className="slider-content-place">
+                                    <span className="slide-content-title">{props.camera.name}</span>
+                                    <span>{props.place?.address?.country_code} | {props.place?.address?.state}</span>
                                 </div>
-                            </div>
+                                <div className="slider-content-temp">
+                                    <div className="slider-content-temp-lt">                                    
+                                        <img src={MODIMAGEPATH + "svg/" + imageIcon } alt="" />                                    
+                                    </div>
+                                    <div className="slider-content-temp-rt">
+                                        <span className="slide-content-title">{props.data?.Current?.Temperature} {props.data?.Current?.Temperature_Unit}</span>
+                                        <span>{props.data?.Current?.PrecipitationRain_Intensity} {props.data?.Current?.PrecipitationRain_Intensity_Unit} 
+                                        {" | "} 
+                                        {props.data?.Current?.TotalCloudCover} {props.data?.Current?.TotalCloudCover_Unit}</span> 
+                                    </div>
+                                </div>
+                                  
                             <div className="slider-content-text">
-                                <span className="slide-content-title">Zur Verfügungs gestellt von:</span>
-                                <span>"Wanderung auf der Loferer Alm"</span>
+                                <span className="slide-content-title">{props.camera?.seotext ? "Zur Verfügungs gestellt von:" : ""}</span>
+                                <span>
+                                    <a target="_blank" rel="noreferrer" href={props.camera?.seolink} title={props.camera?.seotitle}>
+                                        {props.camera?.seotext}
+                                    </a>
+                                </span>
                             </div>
                             <div className="slider-social-nav">
-                                <a target="-blank" href="#" tabindex="0">
-                                    <img src="https://www.busy-shaw.82-165-64-236.plesk.page/modules/mod_tnwebcam/images/fb.png" alt="" />
+                                <a target="_blank" rel="noreferrer" href={"https://www.facebook.com/sharer.php?u=" + props.camera.url + "&t=" + props.camera.name}>
+                                    <img src={MODIMAGEPATH + "fb.png"} alt="" />
                                 </a>
-                                <a target="_blank" href="#" tabindex="0" >
-                                    <img src="https://www.busy-shaw.82-165-64-236.plesk.page/modules/mod_tnwebcam/images/pintrest.png" alt="" />
+                                <a target="_blank" rel="noreferrer" href={"https://pinterest.com/pin/create/button/?url=" + props.camera.url + "&description=" + props.camera.name + "&media=" + props.camera.campicurl} >
+                                    <img src={MODIMAGEPATH + "pintrest.png"} alt="" />
                                 </a>
-                                <a target="_blank" href="#">
-                                    <img src="https://www.busy-shaw.82-165-64-236.plesk.page/modules/mod_tnwebcam/images/email.png" alt="" />
+                                <a target="_blank" rel="noreferrer" onClick={()=>{window.open('https://webcamwidget.fullmarketing.at/ecardjoom.php?id=' + props.camera.id + '&lang=' + props?.lang ,'popup','width=460,height=500'); return false;}} href={"#"}>
+                                    <img src={MODIMAGEPATH + "email.png"} alt="" />
                                 </a>
                                 
                             </div>
                         </div>
                         <div className="slider-content-bottom">
-                            <a href="#" target="_blank">© Hier kommt der Copyright Hinweis mit noch ein bisschen Text dazu</a>
+                            {props.camera?.copyrightlink ? 
+                                <a href={props.camera?.copyrightlink} alt={props.camera?.copyrighttitle} target="_blank">
+                                    {props.camera?.copyrighttext}
+                                </a>
+                            :
+                                <>{props.camera?.copyrighttext}</>
+                            }
                         </div>
                     </div>
 
