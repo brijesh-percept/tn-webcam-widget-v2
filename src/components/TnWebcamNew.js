@@ -275,7 +275,7 @@ function TnWebcamNew(props) {
                                                                     onChange={(e) => {setCamRangeValues(e.target.value, item); changeCamGalleryImage(e.target.value, item);}}
                                                                     style={getBackgroundSize(item)}
                                                                     value={rangeValues['cam' + item]} />
-                                                                <p className='current-range-time' >{
+                                                                    <p className='current-range-time' style={{left: `calc(${(rangeValues['cam' + item]*100/rangeSettings['cam' + item]['max'])-0}% + (${10 - ((rangeValues['cam' + item]*100/rangeSettings['cam' + item]['max']) * 0.2)}px))`}} >{
                                                                     images['cam' + item][rangeValues['cam' + item]].originalTitle
                                                                     }
                                                                 </p>

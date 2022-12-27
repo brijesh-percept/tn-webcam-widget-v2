@@ -367,7 +367,7 @@ tn-webcam-widget {
 	position: absolute;
 	background: #fff;
 	top: -27px;
-	left: calc(0% - 25px);
+	left: calc(0% - 35px);
 	height: auto !important;
 	margin: 0;
 	display: inline-block;
@@ -380,6 +380,8 @@ tn-webcam-widget {
 	font-size: 12px;
 	text-transform: uppercase;
 	font-weight: 700;
+	left: 50%;
+  transform: translateX(-50%);
 }
 .current-range-time::before {
 	content: "";
@@ -399,13 +401,17 @@ tn-webcam-widget {
 	bottom: 120px;
 	z-index: 9;
 	left: 43px;
+	display: flex;
 }
 .tn-webcam-main.show-content .camera-interval-control {
 	bottom: 260px;
 }
-.camera-interval-control select, .camera-interval-control .react-datepicker-wrapper input {
-	background: #fff;
+.camera-interval-control .time-label, 
+.camera-interval-control select, 
+.camera-interval-control .react-datepicker-wrapper input {
+	background: rgba(255,255,255,0.7);
 	font-size: 12px;
+	line-height: 14px;
 	padding: 4px 10px;
 	border-radius: 2px;
 	letter-spacing: 0.5px;
@@ -416,9 +422,10 @@ tn-webcam-widget {
 .react-datepicker__current-month, .react-datepicker-time__header, .react-datepicker-year-header {
 	line-height: normal;
 }
-.tn-webcam-main.show-content .TnWebcamSliderBottom,
+.tn-webcam-main.show-content .TnWebcamSliderBottom, 
 .tn-webcam-main.show-content .slick-slider.thumbnail-slider {
 	display: block;
+	width: 100%;
 }
 .tn-webcam-main.show-content .TnWebcamSliderBottom-btn {
 	border-top: 30px solid rgba(255,255,255,0.78);
@@ -504,7 +511,7 @@ tn-webcam-widget {
 		padding: 18px 20px;
 	}
 	.tn-webcam-slider-middle > .slick-slider .slide-bottom-content {
-		padding: 0 20px;
+		padding: 0 30px;
 	}
 }
 @media only screen and (max-width: 1200px) {
@@ -526,11 +533,11 @@ tn-webcam-widget {
 		height: 30px;
 		padding: 5px;
 	}
+	.slider-content-temp-lt {
+		max-width: 35px;
+	}
 }
 @media only screen and (max-width: 1024px) {
-	/* .tn-webcam-slider-middle > .slick-slider .slide-bottom-content {
-		position: static;
-	} */
 	.slider-content .slider-content-top > div {
 		border: none;
 		background: rgba(255,255,255,0.20);
@@ -572,7 +579,7 @@ tn-webcam-widget {
 	}
 	.tn-webcam-slider-middle > .slick-slider .slide-bottom-content {
 		position: relative;
-		background: black;
+		background: #639100;
 	}
 	.slide-bottom-content::before {
 		display: none;
@@ -586,10 +593,17 @@ tn-webcam-widget {
 		bottom: auto;
 		top: 500px;
 	}
+	.tn-webcam-slider-middle > .slick-slider .slide-bottom-content .slide-play-control button {
+		margin: 0 10px 0 0;
+	}
+	.current-range-time {
+		width: 60px;
+		font-size: 10px;
+	}
 }
 @media only screen and (max-width: 767px) {
 	.tn-webcam-slider-middle > .slick-slider .slide-bottom-content {
-		padding: 0 10px;
+		padding: 0 15px;
 	}
 	.slider-content-top > div span {
 		font-size: 12px;
@@ -599,11 +613,11 @@ tn-webcam-widget {
 	.slider-content-top > div.slider-content-place {
 		max-width: calc(50% - 10px);
 	}
-	.slider-content-top > div.slider-content-temp, .slider-content-top > div.slider-social-nav {
+	.slider-content-top > div.slider-content-temp {
 		max-width: calc(100% - 10px);
 	}
 	.slider-content-top > div.slider-content-text {
-		max-width: 100%;
+		max-width: calc(100% - 10px);
 	}
 	.slider-content-bottom a {
 		font-size: 10px;
@@ -618,11 +632,14 @@ tn-webcam-widget {
 		height: 45px;
 		border: 1px solid rgba(0,0,0,0.35);
 	}
+	.tn-webcam-main .camera-interval-control {
+		transform: scale(0.8);
+		transform-origin: left bottom;
+	}
 	.tn-webcam-main.show-content .camera-interval-control {
 		top: 380px;
 		left: 10px;
-		transform: scale(0.8);
-		transform-origin: left bottom;
+		
 	}
 	.tn-webcam-slider-middle > .slick-slider:first-child .image-gallery-content .image-gallery-slide .image-gallery-image {
 		max-height: 450px;
@@ -667,4 +684,34 @@ tn-webcam-widget {
 	.image-gallery-fullscreen-button {
 		padding: 12px 10px;
 	}
+	.current-range-time {
+		width: 45px;
+		font-size: 10px;
+		line-height: 10px;
+		padding: 2px;
+		top: -30px;
+	}
+
+}
+@media only screen and (max-width: 420px) {
+	.tn-webcam-main.show-content .camera-interval-control {
+		top: 410px;
+	}
+	.tn-webcam-slider-middle > .slick-slider.thumbnail-slider {
+		top: 365px;
+	}
+	.slider-content .slider-content-top > div {
+		margin: 2px;
+	}
+	.slider-content-top > div.slider-content-date, .slider-content-top > div.slider-content-place {
+		max-width: calc(50% - 4px);
+	}
+	.slider-content-top > div.slider-content-temp, 
+	.slider-content-top > div.slider-content-text {
+		max-width: calc(100% - 4px);
+	}
+	.slider-content-top > div.slider-social-nav {
+		margin-left: auto;
+	}
+	
 }
