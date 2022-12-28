@@ -134,7 +134,7 @@ tn-webcam-widget {
 }
 
 .slider-content-top > div {
-	padding: 0 65px;
+	padding: 0 50px;
 	border-left: 1px solid #fff;
 }
 .slider-content-top > div span {
@@ -695,10 +695,10 @@ tn-webcam-widget {
 }
 @media only screen and (max-width: 420px) {
 	.tn-webcam-main.show-content .camera-interval-control {
-		top: 410px;
+		top: 50px;
 	}
 	.tn-webcam-slider-middle > .slick-slider.thumbnail-slider {
-		top: 365px;
+		top: 395px;
 	}
 	.slider-content .slider-content-top > div {
 		margin: 2px;
