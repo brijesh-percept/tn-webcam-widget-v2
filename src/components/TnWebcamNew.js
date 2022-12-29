@@ -12,6 +12,7 @@ import TnWebcamSliderBottom from './TnWebcamSliderBottom';
 import DatePicker from "react-datepicker";
 import { addDays, subDays, format, isWeekend } from 'date-fns';
 
+import Tempslider from './Tempslider';
 
 
 const mapStateToProps = state => ({
@@ -68,17 +69,14 @@ function TnWebcamNew(props) {
             getCameraImages(camid, 'daily', selected_date);
         }
     }
-
     const setCamWeatherData = (data, camid) => {
         weatherData['cam' + camid] = data;
         setWeatherData({...weatherData});      
     }
-
     const setCamAddressData = (data, camid) => {
         addressData['cam' + camid] = data;
         setAddressData({...addressData});      
     }
-    
     const changeCamGalleryImage = (values, camid) => {
         if('cam'+camid in cameraGallery.current){
             if(typeof images['cam'+camid][values-1] !== 'undefined'){
@@ -90,18 +88,12 @@ function TnWebcamNew(props) {
         rangeSettings['cam' + camid] = setting;
         setRangeSettings({ ...rangeSettings });
     }
-
     const setIsCamSliderPlaying = (isPlaying, camid) => {
         isSliderPlayings['cam' + camid] = !isPlaying;
         setIsSliderPlaying({ ...isSliderPlayings });
     }
 
     const [isFade, setIsFade] = useState(false);
-
-    // const [sidebar,setSidebar] = useState(false);
-    // const sidebarclick = () => {
-    //     setSidebar(!sidebar);
-    // }
 
     const handleClick = event => {
         setIsFade(!isFade);
@@ -178,7 +170,6 @@ function TnWebcamNew(props) {
         }
     }, [])
 
-
     useEffect(() => {
         if (Object.keys(props.cams).length > 0) {
             (async () => {
@@ -226,12 +217,19 @@ function TnWebcamNew(props) {
             }
         }
     },[activeCamera]);
+
     return (
         <div className='tn-webcam-component'>
                 <h1 className='main-title'>TN-Webcam</h1>
 
+           <div>
+            
+           </div>
+
                 <div className={'tn-webcam-main' + (isFade ? ' show-content' : '')}>
-                    <div className='tn-webcam-sidebar'></div>
+                    <div className='tn-webcam-sidebar'>
+                   
+                    </div>
                     <div className='tn-webcam-details-area'>
                     <div className='tn-webcam-slider'>
                         <div className='tn-webcam-slider-top'>
@@ -250,7 +248,9 @@ function TnWebcamNew(props) {
                         </div>
 
                         </div>
+                        
                         <div className='tn-webcam-slider-middle'>
+                        
         {Object.keys(images).length === Object.keys(props.cams).length ?
             <>
                 <Slider
@@ -281,6 +281,7 @@ function TnWebcamNew(props) {
                                         renderPlayPauseButton={(onClick, isPlaying) => {
                                             return (
                                                 <>
+                                                
                                                     <div className='camera-interval-control'>
                                                         <select id={'cam'+item} 
                                                             className='cameraintervalselect' 
@@ -306,7 +307,11 @@ function TnWebcamNew(props) {
                                                                 }</p>
                                                         }
                                                     </div>
+                                                    
                                                     <div className='slide-bottom-content'>
+                                                       
+                                                       
+                                                        
                                                         <div className='slide-play-control'>
                                                             <PlayPause
                                                                 onClick={() => { onClick(); setIsCamSliderPlaying(isPlaying, item); }}
@@ -332,11 +337,15 @@ function TnWebcamNew(props) {
                                                                 : ''
                                                             }    
                                                         </div>
+
+                                                        <Tempslider/>
+                                                        
                                                         <div className='TnWebcamSliderBottom-btn' onClick={handleClick} ></div>
                                                         <div className='TnWebcamSliderBottom'>
                                                             <TnWebcamSliderBottom data={weatherData['cam'+item]} camera={props.cams[item]} lang={props.lang} place={addressData['cam'+item]}  />
                                                         </div>
                                                     </div>
+                                                    
                                                 </>
                                             )
                                             }
@@ -352,6 +361,7 @@ function TnWebcamNew(props) {
 
                 <Slider
                     asNavFor={nav1}
+                    draggable={false}
                     ref={slider => (setNav2(slider))}
                     slidesToShow={2}
                     swipeToSlide={true}
@@ -384,7 +394,8 @@ function TnWebcamNew(props) {
                 <p>Loading....</p>
             </>
         }
-            </div>
+                        </div>
+                        <Tempslider/>
                        
 
                     </div>

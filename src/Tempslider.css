@@ -1,0 +1,147 @@
+.weathersmallmod {
+	background: rgba(255, 255, 255, 0.5);
+	padding: 10px 25px;
+	overflow: hidden;
+	border-radius: 10px;
+	display: inline-block;
+	max-width: 100%;
+	position: relative;
+	box-sizing: border-box;
+	max-width: 100%;
+	margin: 30px;
+	background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/14179/0236.jpg');
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	z-index: 99;
+}
+.weathersmallmod .weathersmallmod_inner {
+	display: flex;
+	overflow-x: auto;
+	scrollbar-width: thin;
+	cursor: grab;
+	cursor: -o-grab;
+	cursor: -webkit-grab;
+	z-index: 99;
+	position: relative;
+	
+}
+
+.smallwettemp {
+	font-size: 18px;
+	margin-top: 5px;
+}
+.weathersmallin {
+	text-align: center;
+	margin: 20px 5px;
+	min-width: 60px;
+	color: rgba(0, 0, 0, 0.9);
+	padding: 5px;
+	border-radius: 5px;
+    -webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	-ms-border-radius: 5px;
+	-o-border-radius: 5px;
+	transition: 0.3s all ease;
+	transform: scale(1.0);
+	position: relative;
+	backdrop-filter: blur(5px);
+	background-color: rgba(255, 255, 255, 0.5);
+}
+.weathersmallin:hover {
+	transform: scale(1.2);
+}
+.weathersmallin > * {
+	margin: 0;
+}
+.weathersmallin h6 {
+	font-size: 14px;
+	line-height: 16px;
+	margin: 8px 0 0 0;
+	font-weight: 600;
+}
+.weathersmallin .scrolltempsp {
+	font-size: 12px;
+    line-height: 14px;
+	font-weight: bold;
+	font-family: arial;
+}
+.weathersmallin p {
+	font-size: 10px;
+	line-height: 12px;
+}
+.weathersmallin img {
+    display: block;
+	width: 32px;
+	margin: 0 auto;
+}
+.weathersmallin .smallwetday {
+	font-size: 16px;
+	line-height: 16px;
+	margin-top: 8px;
+	margin-bottom: 0;
+}
+.smallwettemp {
+	font-size: 16px;
+	line-height: 20px;
+	font-weight: 500;
+	margin-bottom: 0;
+}
+
+.weathersmall_arrows {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 100%;
+	left: 0;
+}
+.weathersmall_arrows_inner {
+	position: relative;
+	height: 20px;
+	width: 15px;
+	display: inline-block;
+	cursor: pointer;
+	margin: 0 3px;
+    opacity: 0.7;
+}
+.weathersmall_arrows_inner::before {
+	content: "";
+	height: 2px;
+	width: 12px;
+	display: inline-block;
+	background: #000;
+	transform: rotate(45deg);
+	position: absolute;
+	left: 0;
+	top: 5px;
+}
+.weathersmall_arrows_inner::after {
+	content: "";
+	height: 2px;
+	width: 12px;
+	display: inline-block;
+	background: #000;
+	transform: rotate(-45deg);
+	position: absolute;
+	left: 0;
+	top: 13px;
+	cursor: pointer;
+}
+.weathersmall_arrows_inner.weathersmall_arrows_left::before {
+	top: 13px;
+}
+.weathersmall_arrows_inner.weathersmall_arrows_left::after {
+	top: 5px;
+}
+
+.weathersmall_arrows_inner.weathersmall_arrows_right {
+	float: right;
+}
+.weathersmallmod_inner::-webkit-scrollbar {
+  display: none !important;
+}
+
+.weathersmallmod_inner {
+	-ms-overflow-style: none !important;
+	scrollbar-width: none !important;
+}

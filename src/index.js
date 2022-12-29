@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { Provider } from 'react-redux'
 import configureStore from "./store/configureStore";
 import styles from './App.css';
-
+//import DragScroll from '../node_modules/dragscroll/dragscroll';
 const store = configureStore();
 
 const Index = (props) => {

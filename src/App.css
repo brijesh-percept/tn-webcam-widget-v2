@@ -715,3 +715,48 @@ tn-webcam-widget {
 	}
 	
 }
+/* .cam_hourly_data {
+	display: flex;
+	overflow-x: auto;
+	 scrollbar-width: thin; 
+	 cursor: grab; 
+	 cursor: -o-grab; 
+	cursor: -webkit-grab;
+	height: auto;
+	overflow-x: auto;
+	-ms-overflow-style: none !important;
+	scrollbar-width: none !important;
+	padding-top: 10px;
+	z-index: 1;
+}
+.cam_hourly_data  div.slick-slide {
+	padding: 20px 5px;
+}
+.cam_hourly_data .weathersmallmod_inner {
+	min-width: 60px;
+	background: rgba(255,255,255,0.8);
+	padding: 5px;
+	border-radius: 8px;
+	transition: 0.3s all ease;
+	transform: scale(1.0);
+	text-align: center;
+	margin: 10px 5px;
+	transition: 0.3S all ease;
+	-webkit-transition: 0.3S all ease;
+	-moz-transition: 0.3S all ease;
+	-ms-transition: 0.3S all ease;
+	-o-transition: 0.3S all ease;
+}
+.cam_hourly_data .weathersmallmod_inner:hover {
+	transform: scale(1.1);
+	-webkit-transform: scale(1.1);
+	-moz-transform: scale(1.1);
+	-ms-transform: scale(1.1);
+	-o-transform: scale(1.1);
+}
+.weathersmallmod_inner img {
+	width: 30px;
+	margin: 0 auto;
+}
+ */
+
